@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>py-tailwind-utils &#8212; py-tailwind-utils 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to py-tailwind-utils’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="py-tailwind-utils">
+<h1><a class="reference external" href="https://github.com/Monallabs-org/py-tailwind-utils">py-tailwind-utils</a><a class="headerlink" href="#py-tailwind-utils" title="Permalink to this heading">¶</a></h1>
+<p>A library that makes working with Tailwind CSS in python easier. It
+provides set of operators, functions, and python native objects that
+make it easier to express and manipulate tailwind directives.</p>
+<p>Instead of styling a component of with a long string such “bg-pink-400
+ring-offset-red-200 justify-content-start text-black-800”, using this
+library you would instead write the same as first class python
+statement:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tstr</span><span class="p">(</span><span class="n">bg</span><span class="o">/</span><span class="n">pink</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">ring</span><span class="o">/</span><span class="n">offset</span><span class="o">/</span><span class="n">red</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jc</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">fc</span><span class="o">/</span><span class="n">black</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">This has several advantages:</div>
+<div class="line">- makes manipulation of styles such as</div>
+<div class="line">– passing style directives to functions,</div>
+<div class="line">– substitution of style through variable assignment a lot easier. -
+makes it feasible to do bookkeeping and analyis of style used across
+various components of an webpage</div>
+<div class="line">- is basis for theme manipulation, i.e., bulk modify styles of several
+components using a single command.</div>
+</div>
+<p>A word of caution: This library does pollute the namespace of your
+python file/module, so be careful if using “from py_tailwind_utils
+import *“. Also, not all construct of tailwind is available here.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">¶</a></h2>
+<section id="tailwind-constructs-as-python-objects">
+<h3>Tailwind constructs as python objects<a class="headerlink" href="#tailwind-constructs-as-python-objects" title="Permalink to this heading">¶</a></h3>
+<p>To begin with the library exports name that reflect various tailwind
+constructs. For, e.g. <code class="docutils literal notranslate"><span class="pre">bg</span></code> reflects tailwind utility class <code class="docutils literal notranslate"><span class="pre">bg</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bd</span></code> reflects <code class="docutils literal notranslate"><span class="pre">border</span></code> and so on. See table for mapping between
+python constructs and tailwind constructs.</p>
+</section>
+<section id="tailwind-expression-builder">
+<h3>Tailwind expression builder<a class="headerlink" href="#tailwind-expression-builder" title="Permalink to this heading">¶</a></h3>
+<p>The above python-tailwind constructs support division operator using
+which one can create tailwind styling expression such as “bg-green-100”,
+“ring-offset-red-200”, etc. In py-tailwind-utils, these are expressed as
+first class python objects as <code class="docutils literal notranslate"><span class="pre">bg/green/1</span></code> and <code class="docutils literal notranslate"><span class="pre">ring/offset/red/2</span></code>.</p>
+</section>
+<section id="tailwind-utility-as-python-enums">
+<h3>Tailwind utility as python enums<a class="headerlink" href="#tailwind-utility-as-python-enums" title="Permalink to this heading">¶</a></h3>
+<p>The library provides enum classes that encapsulate options for a
+tailwind utility. For e.g. for various options for justify content, the
+library provides enum class <code class="docutils literal notranslate"><span class="pre">JustifyContent</span></code> (or <code class="docutils literal notranslate"><span class="pre">jc</span></code>) as follows:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">JustifyContent</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="s2">&quot;justify-start&quot;</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;justify-end&quot;</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="s2">&quot;justify-center&quot;</span>
+    <span class="n">between</span> <span class="o">=</span> <span class="s2">&quot;justify-between&quot;</span>
+    <span class="n">evenly</span> <span class="o">=</span> <span class="s2">&quot;justify-evenly&quot;</span>
+    <span class="n">around</span> <span class="o">=</span> <span class="s2">&quot;justify-around&quot;</span>
+</pre></div>
+</div>
+<p>The helps group directives or identify duplicates in a style definition.</p>
+</section>
+<section id="tailwind-modifier-functions">
+<h3>Tailwind modifier functions<a class="headerlink" href="#tailwind-modifier-functions" title="Permalink to this heading">¶</a></h3>
+<p>modifiers are expressed using functions over tailwind expression. For
+example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hover</span><span class="p">(</span><span class="n">jc</span><span class="o">.</span><span class="n">end</span><span class="p">,</span> <span class="n">bg</span><span class="o">/</span><span class="n">green</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">fc</span><span class="o">/</span><span class="n">blue</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">*</span><span class="n">hover</span><span class="p">(</span><span class="o">*</span><span class="n">focus</span><span class="p">(</span><span class="n">bg</span><span class="o">/</span><span class="n">green</span><span class="o">/</span><span class="mi">400</span><span class="p">),</span> <span class="o">*</span><span class="n">focus</span><span class="p">(</span><span class="o">*</span><span class="n">placeholder</span><span class="p">(</span><span class="n">noop</span><span class="o">/</span><span class="n">fw</span><span class="o">.</span><span class="n">bold</span><span class="p">),</span> <span class="n">fc</span><span class="o">/</span><span class="n">pink</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="convert-python-style-expression-to-tailwind-class-expression">
+<h3>Convert python style expression to tailwind class expression<a class="headerlink" href="#convert-python-style-expression-to-tailwind-class-expression" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">tstr</span></code> function converts python tailwind style expression to
+string value containing tailwind directives. In the example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">py_tailwind_utils</span> <span class="kn">import</span> <span class="n">tstr</span>
+<span class="n">tstr</span><span class="p">(</span><span class="n">bg</span><span class="o">/</span><span class="n">pink</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="n">ring</span><span class="o">/</span><span class="n">offset</span><span class="o">/</span><span class="n">red</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">jc</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">fc</span><span class="o">/</span><span class="n">pink</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">tstr</span></code> will convert to proper tailwind definition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bg</span><span class="o">-</span><span class="n">pink</span><span class="o">-</span><span class="mi">400</span> <span class="n">ring</span><span class="o">-</span><span class="n">offset</span><span class="o">-</span><span class="n">red</span><span class="o">-</span><span class="mi">200</span> <span class="n">justify</span><span class="o">-</span><span class="n">start</span> <span class="n">text</span><span class="o">-</span><span class="n">pink</span><span class="o">-</span><span class="mi">800</span>
+</pre></div>
+</div>
+</section>
+<section id="append-merge-tailwind-directive-to-an-existing-style-list">
+<h3>Append/merge tailwind directive to an existing style list<a class="headerlink" href="#append-merge-tailwind-directive-to-an-existing-style-list" title="Permalink to this heading">¶</a></h3>
+<p>Provides <code class="docutils literal notranslate"><span class="pre">conc_twtags</span></code> function to add/merge/append new directive to
+an exisiting list of styles. For e.g. if</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mytags</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bg</span> <span class="o">/</span> <span class="n">green</span> <span class="o">/</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">fc</span> <span class="o">/</span> <span class="n">blue</span> <span class="o">/</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">flx</span><span class="o">.</span><span class="n">row</span><span class="p">,</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+<p>is an exisiting set of styles, and if we add <code class="docutils literal notranslate"><span class="pre">bg/blue/1</span></code> using
+<code class="docutils literal notranslate"><span class="pre">conc_twtags</span></code>, then it will perform a smart merge, i.e., it will
+override the exisiting directive that belong to the same utility class.
+So,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">classes</span>  <span class="o">=</span> <span class="n">tstr</span><span class="p">(</span><span class="n">conc_twtags</span><span class="p">(</span><span class="o">*</span><span class="n">mytags</span><span class="p">,</span> <span class="n">bg</span><span class="o">/</span><span class="n">blue</span><span class="o">/</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>will result in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bg</span><span class="o">-</span><span class="n">blue</span><span class="o">-</span><span class="mi">100</span> <span class="n">text</span><span class="o">-</span><span class="n">blue</span><span class="o">-</span><span class="mi">100</span> <span class="n">flex</span><span class="o">-</span><span class="n">row</span>
+</pre></div>
+</div>
+<p>This feature of <code class="docutils literal notranslate"><span class="pre">py-tailwind-tags</span></code> comes in very useful for theme
+customization.</p>
+</section>
+<section id="remove-a-tailwind-directive">
+<h3>Remove a tailwind directive<a class="headerlink" href="#remove-a-tailwind-directive" title="Permalink to this heading">¶</a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">remove_from_twtag_list</span></code> to remove a tailwind directive from an
+existing list. An example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mytags</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">bg</span> <span class="o">/</span> <span class="n">green</span> <span class="o">/</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">fc</span> <span class="o">/</span> <span class="n">blue</span> <span class="o">/</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">jc</span><span class="o">.</span><span class="n">start</span><span class="p">,</span>
+        <span class="n">flx</span><span class="o">.</span><span class="n">row</span><span class="p">,</span>
+    <span class="p">]</span>
+ <span class="n">remove_from_twtag_list</span><span class="p">(</span><span class="n">mytags</span><span class="p">,</span> <span class="n">jc</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note: will throw ValueError if the request removeal object is not
+present in the list.</p>
+</section>
+<section id="store-tailwind-styles-as-json">
+<h3>Store tailwind styles as Json<a class="headerlink" href="#store-tailwind-styles-as-json" title="Permalink to this heading">¶</a></h3>
+<p>All the styles applied to a component can be exported out as json,
+organized by utility class. For example, to print out json use command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">res</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">styClause</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">hover</span><span class="p">(</span><span class="o">*</span><span class="n">focus</span><span class="p">(</span><span class="n">bg</span><span class="o">/</span><span class="n">green</span><span class="o">/</span><span class="mi">400</span><span class="p">),</span> <span class="o">*</span><span class="n">focus</span><span class="p">(</span><span class="o">*</span><span class="n">placeholder</span><span class="p">(</span><span class="n">noop</span><span class="o">/</span><span class="n">fw</span><span class="o">.</span><span class="n">bold</span><span class="p">),</span> <span class="n">fc</span><span class="o">/</span><span class="n">pink</span><span class="o">/</span><span class="mi">100</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>which will output: The <code class="docutils literal notranslate"><span class="pre">res</span></code> out:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;passthrough&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span>
+<span class="w">    </span><span class="nt">&quot;bg&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_val&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;green-400&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_modifier_chain&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hover&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;focus&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;FontWeight&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_val&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bold&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_modifier_chain&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hover&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;focus&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;placeholder&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;fc&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;_val&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pink-100&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;_modifier_chain&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;hover&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;focus&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="load-json-back-as-tailwind-style">
+<h3>Load json back as tailwind style<a class="headerlink" href="#load-json-back-as-tailwind-style" title="Permalink to this heading">¶</a></h3>
+<p>Finally, once can read back the json, to convert the original tailwind
+style statement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">claus</span> <span class="o">=</span> <span class="n">tt</span><span class="o">.</span><span class="n">styClause</span><span class="o">.</span><span class="n">to_clause</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tstr</span><span class="p">(</span><span class="o">*</span><span class="n">claus</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Which outputs the original tailwind expression</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hover</span><span class="p">:</span><span class="n">focus</span><span class="p">:</span><span class="n">bg</span><span class="o">-</span><span class="n">green</span><span class="o">-</span><span class="mi">400</span> <span class="n">hover</span><span class="p">:</span><span class="n">focus</span><span class="p">:</span><span class="n">placeholder</span><span class="p">:</span><span class="n">font</span><span class="o">-</span><span class="n">bold</span> <span class="n">hover</span><span class="p">:</span><span class="n">focus</span><span class="p">:</span><span class="n">text</span><span class="o">-</span><span class="n">pink</span><span class="o">-</span><span class="mi">100</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="all-supported-tailwind-constructs-in-python-as-keywords-or-enum-classes">
+<h2>All supported tailwind constructs in python as keywords or Enum classes<a class="headerlink" href="#all-supported-tailwind-constructs-in-python-as-keywords-or-enum-classes" title="Permalink to this heading">¶</a></h2>
+<figure class="align-default" id="id1">
+<img alt="Optional Title" src="utils/tailwind_constructs_for_ofjustpy.png?raw=true" />
+<figcaption>
+<p><span class="caption-text">All supported tailwind constructs in python as keywords or Enum
+classes</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading">¶</a></h2>
+<section id="style-tags">
+<h3>Style Tags<a class="headerlink" href="#style-tags" title="Permalink to this heading">¶</a></h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"><colgroup><col  class="org-left" /><col  class="org-left" /></colgroup><thead><tr><th scope="col" class="org-left"><p>python keyword</p>
+</th><th scope="col" class="org-left"><p>tailwind construct</p>
+</th></tr></thead><tbody><tr><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"><p>bd</p>
+</td><td class="org-left"><p>border</p>
+</td></tr><tr><td class="org-left"><p>from_</p>
+</td><td class="org-left"><p>from</p>
+</td></tr><tr><td class="org-left"><p>to_</p>
+</td><td class="org-left"><p>to</p>
+</td></tr><tr><td class="org-left"><p>via_</p>
+</td><td class="org-left"><p>to</p>
+</td></tr><tr><td class="org-left"><p>cc</p>
+</td><td class="org-left"><p>None</p>
+</td></tr><tr><td class="org-left"><p>container</p>
+</td><td class="org-left"><p>container</p>
+</td></tr><tr><td class="org-left"><p>inherit</p>
+</td><td class="org-left"><p>inherit</p>
+</td></tr><tr><td class="org-left"><p>current</p>
+</td><td class="org-left"><p>current</p>
+</td></tr><tr><td class="org-left"><p>transparent</p>
+</td><td class="org-left"><p>transparent</p>
+</td></tr><tr><td class="org-left"><p>first</p>
+</td><td class="org-left"><p>first</p>
+</td></tr><tr><td class="org-left"><p>full</p>
+</td><td class="org-left"><p>full</p>
+</td></tr><tr><td class="org-left"><p>screen</p>
+</td><td class="org-left"><p>screen</p>
+</td></tr><tr><td class="org-left"><p>hidden</p>
+</td><td class="org-left"><p>hidden</p>
+</td></tr><tr><td class="org-left"><p>last</p>
+</td><td class="org-left"><p>last</p>
+</td></tr><tr><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>none</p>
+</td></tr><tr><td class="org-left"><p>scroll</p>
+</td><td class="org-left"><p>scroll</p>
+</td></tr><tr><td class="org-left"><p>span</p>
+</td><td class="org-left"><p>span</p>
+</td></tr><tr><td class="org-left"><p>text</p>
+</td><td class="org-left"><p>text</p>
+</td></tr><tr><td class="org-left"><p>visible</p>
+</td><td class="org-left"><p>visible</p>
+</td></tr><tr><td class="org-left"><p>auto</p>
+</td><td class="org-left"><p>auto</p>
+</td></tr><tr><td class="org-left"><p>group</p>
+</td><td class="org-left"><p>group</p>
+</td></tr><tr><td class="org-left"><p>double</p>
+</td><td class="org-left"><p>double</p>
+</td></tr><tr><td class="org-left"><p>clip</p>
+</td><td class="org-left"><p>clip</p>
+</td></tr><tr><td class="org-left"><p>invisible</p>
+</td><td class="org-left"><p>invisible</p>
+</td></tr><tr><td class="org-left"><p>absolute</p>
+</td><td class="org-left"><p>absolute</p>
+</td></tr><tr><td class="org-left"><p>grow</p>
+</td><td class="org-left"><p>grow</p>
+</td></tr><tr><td class="org-left"><p>bg</p>
+</td><td class="org-left"><p>bg</p>
+</td></tr><tr><td class="org-left"><p>x</p>
+</td><td class="org-left"><p>x</p>
+</td></tr><tr><td class="org-left"><p>y</p>
+</td><td class="org-left"><p>y</p>
+</td></tr><tr><td class="org-left"><p>duration</p>
+</td><td class="org-left"><p>duration</p>
+</td></tr><tr><td class="org-left"><p>inset</p>
+</td><td class="org-left"><p>inset</p>
+</td></tr><tr><td class="org-left"><p>max</p>
+</td><td class="org-left"><p>max</p>
+</td></tr><tr><td class="org-left"><p>min</p>
+</td><td class="org-left"><p>min</p>
+</td></tr><tr><td class="org-left"><p>offset</p>
+</td><td class="org-left"><p>offset</p>
+</td></tr><tr><td class="org-left"><p>opacity</p>
+</td><td class="org-left"><p>opacity</p>
+</td></tr><tr><td class="org-left"><p>order</p>
+</td><td class="org-left"><p>order</p>
+</td></tr><tr><td class="org-left"><p>ring</p>
+</td><td class="org-left"><p>ring</p>
+</td></tr><tr><td class="org-left"><p>row</p>
+</td><td class="org-left"><p>row</p>
+</td></tr><tr><td class="org-left"><p>rows</p>
+</td><td class="org-left"><p>rows</p>
+</td></tr><tr><td class="org-left"><p>col</p>
+</td><td class="org-left"><p>col</p>
+</td></tr><tr><td class="org-left"><p>cols</p>
+</td><td class="org-left"><p>cols</p>
+</td></tr><tr><td class="org-left"><p>space</p>
+</td><td class="org-left"><p>space</p>
+</td></tr><tr><td class="org-left"><p>stroke</p>
+</td><td class="org-left"><p>stroke</p>
+</td></tr><tr><td class="org-left"><p>gap</p>
+</td><td class="org-left"><p>gap</p>
+</td></tr><tr><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>end</p>
+</td></tr><tr><td class="org-left"><p>fc</p>
+</td><td class="org-left"><p>text</p>
+</td></tr><tr><td class="org-left"><p>G</p>
+</td><td class="org-left"><p>grid</p>
+</td></tr><tr><td class="org-left"><p>H</p>
+</td><td class="org-left"><p>h</p>
+</td></tr><tr><td class="org-left"><p>lh</p>
+</td><td class="org-left"><p>leading</p>
+</td></tr><tr><td class="org-left"><p>mr</p>
+</td><td class="org-left"><p>m</p>
+</td></tr><tr><td class="org-left"><p>ovf</p>
+</td><td class="org-left"><p>overflow</p>
+</td></tr><tr><td class="org-left"><p>pd</p>
+</td><td class="org-left"><p>p</p>
+</td></tr><tr><td class="org-left"><p>ph</p>
+</td><td class="org-left"><p>placeholder</p>
+</td></tr><tr><td class="org-left"><p>resize</p>
+</td><td class="org-left"><p>resize</p>
+</td></tr><tr><td class="org-left"><p>sb</p>
+</td><td class="org-left"><p>b</p>
+</td></tr><tr><td class="org-left"><p>sl</p>
+</td><td class="org-left"><p>l</p>
+</td></tr><tr><td class="org-left"><p>sr</p>
+</td><td class="org-left"><p>r</p>
+</td></tr><tr><td class="org-left"><p>st</p>
+</td><td class="org-left"><p>t</p>
+</td></tr><tr><td class="org-left"><p>top</p>
+</td><td class="org-left"><p>top</p>
+</td></tr><tr><td class="org-left"><p>right</p>
+</td><td class="org-left"><p>right</p>
+</td></tr><tr><td class="org-left"><p>bottom</p>
+</td><td class="org-left"><p>bottom</p>
+</td></tr><tr><td class="org-left"><p>left</p>
+</td><td class="org-left"><p>left</p>
+</td></tr><tr><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>start</p>
+</td></tr><tr><td class="org-left"><p>W</p>
+</td><td class="org-left"><p>w</p>
+</td></tr><tr><td class="org-left"><p>zo</p>
+</td><td class="org-left"><p>z</p>
+</td></tr><tr><td class="org-left"><p>noop</p>
+</td><td class="org-left"></td></tr><tr><td class="org-left"><p>outline</p>
+</td><td class="org-left"><p>outline</p>
+</td></tr><tr><td class="org-left"><p>shadow</p>
+</td><td class="org-left"><p>shadow</p>
+</td></tr></tbody></table></section>
+<section id="style-values">
+<h3>Style values<a class="headerlink" href="#style-values" title="Permalink to this heading">¶</a></h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides"><colgroup><col  class="org-left" /><col  class="org-left" /><col  class="org-left" /><col  class="org-left" /></colgroup><thead><tr><th scope="col" class="org-left"><p>Tailwind Utility Class</p>
+</th><th scope="col" class="org-left"><p>Python enum class</p>
+</th><th scope="col" class="org-left"><p>python attr names</p>
+</th><th scope="col" class="org-left"><p>tailwind utility</p>
+</th></tr></thead><tbody><tr><td class="org-left"><p>DisplayBox</p>
+</td><td class="org-left"><p>db</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>b</p>
+</td><td class="org-left"><p>block</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>bi</p>
+</td><td class="org-left"><p>inline-block</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>i</p>
+</td><td class="org-left"><p>inline</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>f</p>
+</td><td class="org-left"><p>flex</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>fi</p>
+</td><td class="org-left"><p>inline-flex</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>t</p>
+</td><td class="org-left"><p>table</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>g</p>
+</td><td class="org-left"><p>grid</p>
+</td></tr><tr><td class="org-left"><p>BoxLayout</p>
+</td><td class="org-left"><p>db</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>b</p>
+</td><td class="org-left"><p>block</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>bi</p>
+</td><td class="org-left"><p>inline-block</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>i</p>
+</td><td class="org-left"><p>inline</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>f</p>
+</td><td class="org-left"><p>flex</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>fi</p>
+</td><td class="org-left"><p>inline-flex</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>t</p>
+</td><td class="org-left"><p>table</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>g</p>
+</td><td class="org-left"><p>grid</p>
+</td></tr><tr><td class="org-left"><p>WrapAround</p>
+</td><td class="org-left"><p>wa</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>r</p>
+</td><td class="org-left"><p>float-right</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>l</p>
+</td><td class="org-left"><p>float-left</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>n</p>
+</td><td class="org-left"><p>float-none</p>
+</td></tr><tr><td class="org-left"><p>ClearWrap</p>
+</td><td class="org-left"><p>wc</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>l</p>
+</td><td class="org-left"><p>clear-left</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>r</p>
+</td><td class="org-left"><p>clear-right</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>b</p>
+</td><td class="org-left"><p>clear-both</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>n</p>
+</td><td class="org-left"><p>clear-none</p>
+</td></tr><tr><td class="org-left"><p>ObjectFit</p>
+</td><td class="org-left"><p>of</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cn</p>
+</td><td class="org-left"><p>object-contain</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cv</p>
+</td><td class="org-left"><p>object-cover</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>f</p>
+</td><td class="org-left"><p>object-fill</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>n</p>
+</td><td class="org-left"><p>object-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sd</p>
+</td><td class="org-left"><p>object-scale-down</p>
+</td></tr><tr><td class="org-left"><p>ObjectPosition</p>
+</td><td class="org-left"><p>op</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>b</p>
+</td><td class="org-left"><p>object-bottom</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>c</p>
+</td><td class="org-left"><p>object-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>l</p>
+</td><td class="org-left"><p>object-left</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>lb</p>
+</td><td class="org-left"><p>object-left-bottom</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>lt</p>
+</td><td class="org-left"><p>object-left-top</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>r</p>
+</td><td class="org-left"><p>object-right</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rb</p>
+</td><td class="org-left"><p>object-right-bottom</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>t</p>
+</td><td class="org-left"><p>object-top</p>
+</td></tr><tr><td class="org-left"><p>Visibility</p>
+</td><td class="org-left"><p>visibility</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>v</p>
+</td><td class="org-left"><p>visible</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>nv</p>
+</td><td class="org-left"><p>invisible</p>
+</td></tr><tr><td class="org-left"><p>FlexLayout</p>
+</td><td class="org-left"><p>flx</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>row</p>
+</td><td class="org-left"><p>flex-row</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rrow</p>
+</td><td class="org-left"><p>flex-row-reverse</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>col</p>
+</td><td class="org-left"><p>flex-col</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rcol</p>
+</td><td class="org-left"><p>flex-col-reverse</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>wrap</p>
+</td><td class="org-left"><p>flex-wrap</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rwrap</p>
+</td><td class="org-left"><p>flex-wrap-reverse</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>nowrap</p>
+</td><td class="org-left"><p>flex-nowrap</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>one</p>
+</td><td class="org-left"><p>flex-1</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>auto</p>
+</td><td class="org-left"><p>flex-auto</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>initial</p>
+</td><td class="org-left"><p>flex-initial</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>flex-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>grow</p>
+</td><td class="org-left"><p>flex-grow</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>nogrow</p>
+</td><td class="org-left"><p>flex-grow-0</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>shrink</p>
+</td><td class="org-left"><p>flex-shrink</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>noshrink</p>
+</td><td class="org-left"><p>flex-shrink-0</p>
+</td></tr><tr><td class="org-left"><p>JustifyContent</p>
+</td><td class="org-left"><p>jc</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>justify-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>justify-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>justify-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>between</p>
+</td><td class="org-left"><p>justify-between</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>evenly</p>
+</td><td class="org-left"><p>justify-evenly</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>around</p>
+</td><td class="org-left"><p>justify-around</p>
+</td></tr><tr><td class="org-left"><p>JustifyItems</p>
+</td><td class="org-left"><p>ji</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>justify-items-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>justify-items-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>justify-items-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>stretch</p>
+</td><td class="org-left"><p>justify-items-stretch</p>
+</td></tr><tr><td class="org-left"><p>JustifySelf</p>
+</td><td class="org-left"><p>js</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>auto</p>
+</td><td class="org-left"><p>justify-self-auto</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>justify-self-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>justify-self-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>justify-self-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>stretch</p>
+</td><td class="org-left"><p>justify-self-stretch</p>
+</td></tr><tr><td class="org-left"><p>AlignContent</p>
+</td><td class="org-left"><p>ac</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>content-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>content-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>content-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>between</p>
+</td><td class="org-left"><p>content-between</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>evenly</p>
+</td><td class="org-left"><p>content-evenly</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>around</p>
+</td><td class="org-left"><p>content-around</p>
+</td></tr><tr><td class="org-left"><p>AlignItems</p>
+</td><td class="org-left"><p>ai</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>items-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>items-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>items-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>stretch</p>
+</td><td class="org-left"><p>items-stretch</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>baseline</p>
+</td><td class="org-left"><p>items-baseline</p>
+</td></tr><tr><td class="org-left"><p>PlaceContent</p>
+</td><td class="org-left"><p>pc</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>place-content-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>place-content-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>place-content-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>between</p>
+</td><td class="org-left"><p>place-content-between</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>evenly</p>
+</td><td class="org-left"><p>place-content-evenly</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>around</p>
+</td><td class="org-left"><p>place-content-around</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>stretch</p>
+</td><td class="org-left"><p>place-content-stretch</p>
+</td></tr><tr><td class="org-left"><p>PlaceItems</p>
+</td><td class="org-left"><p>pi</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>place-items-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>place-items-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>place-items-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>stretch</p>
+</td><td class="org-left"><p>place-items-stretch</p>
+</td></tr><tr><td class="org-left"><p>PlaceSelf</p>
+</td><td class="org-left"><p>ps</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>auto</p>
+</td><td class="org-left"><p>place-self-auto</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>place-self-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>place-self-end</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>place-self-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>stretch</p>
+</td><td class="org-left"><p>place-self-stretch</p>
+</td></tr><tr><td class="org-left"><p>FontFamily</p>
+</td><td class="org-left"><p>ff</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sans</p>
+</td><td class="org-left"><p>font-sans</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>serif</p>
+</td><td class="org-left"><p>font-serif</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>mono</p>
+</td><td class="org-left"><p>font-mono</p>
+</td></tr><tr><td class="org-left"><p>FontSize</p>
+</td><td class="org-left"><p>fz</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xs</p>
+</td><td class="org-left"><p>text-xs</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sm</p>
+</td><td class="org-left"><p>text-sm</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>_</p>
+</td><td class="org-left"><p>text-base</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>lg</p>
+</td><td class="org-left"><p>text-lg</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl</p>
+</td><td class="org-left"><p>text-xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl2</p>
+</td><td class="org-left"><p>text-2xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl3</p>
+</td><td class="org-left"><p>text-3xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl4</p>
+</td><td class="org-left"><p>text-4xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl5</p>
+</td><td class="org-left"><p>text-5xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl6</p>
+</td><td class="org-left"><p>text-6xl</p>
+</td></tr><tr><td class="org-left"><p>FontWeight</p>
+</td><td class="org-left"><p>fw</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>thin</p>
+</td><td class="org-left"><p>font-thin</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>extralight</p>
+</td><td class="org-left"><p>font-extralight</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>light</p>
+</td><td class="org-left"><p>font-light</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>normal</p>
+</td><td class="org-left"><p>font-normal</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>medium</p>
+</td><td class="org-left"><p>font-medium</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>bold</p>
+</td><td class="org-left"><p>font-bold</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>extrabold</p>
+</td><td class="org-left"><p>font-extrabold</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>black</p>
+</td><td class="org-left"><p>font-black</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>semibold</p>
+</td><td class="org-left"><p>font-semibold</p>
+</td></tr><tr><td class="org-left"><p>LetterSpace</p>
+</td><td class="org-left"><p>ls</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>tighter</p>
+</td><td class="org-left"><p>tracking-tighter</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>tight</p>
+</td><td class="org-left"><p>tracking-tight</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>normal</p>
+</td><td class="org-left"><p>tracking-normal</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>wide</p>
+</td><td class="org-left"><p>tracking-wide</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>wider</p>
+</td><td class="org-left"><p>tracking-wider</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>widest</p>
+</td><td class="org-left"><p>tracking-widest</p>
+</td></tr><tr><td class="org-left"><p>LineHeight</p>
+</td><td class="org-left"><p>lh</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>leading-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>tight</p>
+</td><td class="org-left"><p>leading-tight</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>snug</p>
+</td><td class="org-left"><p>leading-snug</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>normal</p>
+</td><td class="org-left"><p>leading-normal</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>relaxed</p>
+</td><td class="org-left"><p>leading-relaxed</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>loose</p>
+</td><td class="org-left"><p>leading-loose</p>
+</td></tr><tr><td class="org-left"><p>ListItems</p>
+</td><td class="org-left"><p>li</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>list-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>disc</p>
+</td><td class="org-left"><p>list-disc</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>decimal</p>
+</td><td class="org-left"><p>list-decimal</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>inside</p>
+</td><td class="org-left"><p>list-inside</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>outside</p>
+</td><td class="org-left"><p>list-outside</p>
+</td></tr><tr><td class="org-left"><p>TextAlign</p>
+</td><td class="org-left"><p>ta</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>left</p>
+</td><td class="org-left"><p>text-left</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>center</p>
+</td><td class="org-left"><p>text-center</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>right</p>
+</td><td class="org-left"><p>text-right</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>justify</p>
+</td><td class="org-left"><p>text-justify</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>start</p>
+</td><td class="org-left"><p>text-start</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>end</p>
+</td><td class="org-left"><p>text-end</p>
+</td></tr><tr><td class="org-left"><p>TextTransform</p>
+</td><td class="org-left"><p>tt</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>u</p>
+</td><td class="org-left"><p>uppercase</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>l</p>
+</td><td class="org-left"><p>lowercase</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>c</p>
+</td><td class="org-left"><p>capitalize</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>n</p>
+</td><td class="org-left"><p>normal-case</p>
+</td></tr><tr><td class="org-left"><p>VerticalAlign</p>
+</td><td class="org-left"><p>va</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>top</p>
+</td><td class="org-left"><p>align-top</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>middle</p>
+</td><td class="org-left"><p>align-middle</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>bottom</p>
+</td><td class="org-left"><p>align-bottom</p>
+</td></tr><tr><td class="org-left"><p>BackgroundAttachment</p>
+</td><td class="org-left"><p>ba</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>f</p>
+</td><td class="org-left"><p>bg-fixed</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>l</p>
+</td><td class="org-left"><p>bg-local</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>s</p>
+</td><td class="org-left"><p>bg-scroll</p>
+</td></tr><tr><td class="org-left"><p>BorderRadius</p>
+</td><td class="org-left"><p>bdr</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sm</p>
+</td><td class="org-left"><p>rounded-sm</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>md</p>
+</td><td class="org-left"><p>rounded-md</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>lg</p>
+</td><td class="org-left"><p>rounded-lg</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>full</p>
+</td><td class="org-left"><p>rounded-full</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>rounded-none</p>
+</td></tr><tr><td class="org-left"><p>BorderStyle</p>
+</td><td class="org-left"><p>bds</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>solid</p>
+</td><td class="org-left"><p>border-solid</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>dashed</p>
+</td><td class="org-left"><p>border-dashed</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>dotted</p>
+</td><td class="org-left"><p>border-dotted</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>double</p>
+</td><td class="org-left"><p>border-double</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>border-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>collapse</p>
+</td><td class="org-left"><p>border-collapse</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>separate</p>
+</td><td class="org-left"><p>border-separate</p>
+</td></tr><tr><td class="org-left"><p>Outline</p>
+</td><td class="org-left"><p>outline</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>outline-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>_</p>
+</td><td class="org-left"><p>outline</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>dashed</p>
+</td><td class="org-left"><p>outline-dashed</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>dotted</p>
+</td><td class="org-left"><p>outline-dotted</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>double</p>
+</td><td class="org-left"><p>outline-double</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>hidden</p>
+</td><td class="org-left"><p>outline-hidden</p>
+</td></tr><tr><td class="org-left"><p>BoxShadow</p>
+</td><td class="org-left"><p>shadow</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sm</p>
+</td><td class="org-left"><p>shadow-sm</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>_</p>
+</td><td class="org-left"><p>shadow</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>md</p>
+</td><td class="org-left"><p>shadow-md</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>lg</p>
+</td><td class="org-left"><p>shadow-lg</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl</p>
+</td><td class="org-left"><p>shadow-xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl2</p>
+</td><td class="org-left"><p>shadow-2xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>none</p>
+</td><td class="org-left"><p>shadow-none</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>inner</p>
+</td><td class="org-left"><p>shadow-inner</p>
+</td></tr><tr><td class="org-left"><p>Table</p>
+</td><td class="org-left"><p>tbl</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>auto</p>
+</td><td class="org-left"><p>table-auto</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>fixed</p>
+</td><td class="org-left"><p>table-fixed</p>
+</td></tr><tr><td class="org-left"><p>BoxTopo</p>
+</td><td class="org-left"><p>bt</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>bd</p>
+</td><td class="org-left"><p>border</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>container</p>
+</td><td class="org-left"><p>container</p>
+</td></tr><tr><td class="org-left"><p>PlacementPosition</p>
+</td><td class="org-left"><p>ppos</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>static</p>
+</td><td class="org-left"><p>static</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>fixed</p>
+</td><td class="org-left"><p>fixed</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>absolute</p>
+</td><td class="org-left"><p>absolute</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>relative</p>
+</td><td class="org-left"><p>relative</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sticky</p>
+</td><td class="org-left"><p>sticky</p>
+</td></tr><tr><td class="org-left"><p>BoxSizing</p>
+</td><td class="org-left"><p>boxsz</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>b</p>
+</td><td class="org-left"><p>box-border</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>c</p>
+</td><td class="org-left"><p>box-content</p>
+</td></tr><tr><td class="org-left"><p>Prose</p>
+</td><td class="org-left"><p>prse</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>sm</p>
+</td><td class="org-left"><p>prose-sm</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>_</p>
+</td><td class="org-left"><p>prose-base</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>lg</p>
+</td><td class="org-left"><p>prose-lg</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl</p>
+</td><td class="org-left"><p>prose-xl</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>xl2</p>
+</td><td class="org-left"><p>prose-2xl</p>
+</td></tr><tr><td class="org-left"><p>GridFlow</p>
+</td><td class="org-left"><p>gf</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>row</p>
+</td><td class="org-left"><p>grid-flow-row</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>col</p>
+</td><td class="org-left"><p>grid-flow-col</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rowd</p>
+</td><td class="org-left"><p>grid-flow-row-dense</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cold</p>
+</td><td class="org-left"><p>grid-flow-col-dense</p>
+</td></tr><tr><td class="org-left"><p>GridAuto</p>
+</td><td class="org-left"><p>ga</p>
+</td><td class="org-left"></td><td class="org-left"></td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cauto</p>
+</td><td class="org-left"><p>grid-cols-auto</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cmin</p>
+</td><td class="org-left"><p>grid-cols-min</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cmax</p>
+</td><td class="org-left"><p>grid-cols-max</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>cfr</p>
+</td><td class="org-left"><p>grid-cols-fr</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rauto</p>
+</td><td class="org-left"><p>grid-rows-auto</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rmin</p>
+</td><td class="org-left"><p>grid-ros-min</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rmax</p>
+</td><td class="org-left"><p>grid-rows-max</p>
+</td></tr><tr><td class="org-left"></td><td class="org-left"></td><td class="org-left"><p>rfr</p>
+</td><td class="org-left"><p>grid-rows-fr</p>
+</td></tr></tbody></table></section>
+<section id="endnotes">
+<h3>EndNotes<a class="headerlink" href="#endnotes" title="Permalink to this heading">¶</a></h3>
+<p>Developed By: webworks.monallabs.in</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">py-tailwind-utils</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">py-tailwind-utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#all-supported-tailwind-constructs-in-python-as-keywords-or-enum-classes">All supported tailwind constructs in python as keywords or Enum classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to py-tailwind-utils’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Kabira K.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/README.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
