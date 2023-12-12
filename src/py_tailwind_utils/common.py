@@ -29,7 +29,7 @@ import sys
 import aenum
 from addict_tracking_changes import Dict
 from aenum import Enum
-
+import pysnooper
 from .colors import _ColorBase
 
 
@@ -55,6 +55,8 @@ class _IDivExpr:
         #     return _IDivExpr(self, arg)
         # return _IDivExpr(self, arg)
 
+
+    #@pysnooper.snoop()
     def evaluate(self, val=""):
         # print("eval = ", self, " ", self.tagstr, " ", self.arg2, " ", val)
         # print("eval = ", " ", type(self.tagstr),
@@ -74,6 +76,11 @@ class _IDivExpr:
             isinstance(self.arg2, TagBase) or isinstance(self.arg2, _ColorBase)
         ):
             ares = self.arg2.evaluate(val)
+            print ("$$ = ", tstr(self.arg2))
+            # hardwired :( <-- sad day for humanity
+            if tstr(self.arg2) == "auto":
+                ares = "-" + ares
+            
             if val == "":
                 # Note: for utility like max which can be used
                 # max/w/0 (see https://tailwindcss.com/docs/max-width) and

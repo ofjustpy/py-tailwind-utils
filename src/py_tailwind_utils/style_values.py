@@ -401,10 +401,10 @@ class Table(Enum):
 
 
 # Layout
-class BoxTopo(Enum):
-    bd = "border"
-    container = "container"
-    pass
+# class BoxTopo(Enum):
+#     bd = "border"
+#     container = "container"
+#     pass
 
 
 class PlacementPosition(Enum):
@@ -449,7 +449,15 @@ class GridAuto(Enum):
     rmax = "grid-rows-max"
     rfr = "grid-rows-fr"
 
-
+class Transition(Enum):
+    none = "transition-none"
+    all = "transition-all"
+    default = "transition"
+    colors = "transition-colors"
+    opacity = "transition-opacity"
+    shadow = "transition-shadow"
+    transform = "transition-transform"
+    
 current_module = sys.modules[__name__]
 styValueDict = dict(
     [

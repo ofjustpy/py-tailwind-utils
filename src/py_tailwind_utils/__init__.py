@@ -29,6 +29,7 @@ from .colors import *
 from .common import conc_twtags
 from .common import remove_from_twtag_list
 from .common import tstr
+from .modifiers import modify
 from .dpathutils import dget
 from .dpathutils import dnew
 from .dpathutils import dpath_delete as ddelete
@@ -49,7 +50,7 @@ from .style_values_noop import BorderRadius as bdr
 from .style_values_noop import BorderStyle as bds
 from .style_values_noop import BoxShadow as shadow
 from .style_values_noop import BoxSizing as boxsz
-from .style_values_noop import BoxTopo as bt
+#from .style_values_noop import BoxTopo as bt
 from .style_values_noop import ClearWrap as wc
 from .style_values_noop import DisplayBox as db
 from .style_values_noop import FlexLayout as flx
@@ -80,6 +81,7 @@ from .style_values_noop import TextTransform as tt
 from .style_values_noop import VerticalAlign as va
 from .style_values_noop import Visibility as visibility
 from .style_values_noop import WrapAround as wa
+from .style_values_noop import Transition as transition
 from .utils import gradient
 from .valuetags import *
 

@@ -8,7 +8,7 @@ class _boxshadow(TagBase):
     tagops = []
     taghelp = "shadow"
     elabel = "boxshadow"
-
+    stemval = "boxshadow"
 
 boxshadow = _boxshadow()
 

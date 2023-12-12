@@ -1002,19 +1002,19 @@ class _Table:
 Table = _Table()
 
 
-class _BoxTopo:
-    _sv_class = sv.BoxTopo
+# class _BoxTopo:
+#     _sv_class = sv.BoxTopo
 
-    @property
-    def bd(cls):
-        return noop / sv.BoxTopo.bd
+#     @property
+#     def bd(cls):
+#         return noop / sv.BoxTopo.bd
 
-    @property
-    def container(cls):
-        return noop / sv.BoxTopo.container
+#     @property
+#     def container(cls):
+#         return noop / sv.BoxTopo.container
 
 
-BoxTopo = _BoxTopo()
+# BoxTopo = _BoxTopo()
 
 
 class _PlacementPosition:
@@ -1107,6 +1107,39 @@ class _GridFlow:
 
 
 GridFlow = _GridFlow()
+
+class _Transition:
+    _sv_class = sv.Transition
+    @property
+    def none(cls):
+        return noop/sv.Transition.none
+
+    @property
+    def all(cls):
+        return noop/sv.Transition.all
+
+    @property
+    def default(cls):
+        return noop/sv.Transition.default
+
+    @property
+    def colors(cls):
+        return noop/sv.Transition.colors
+
+    @property
+    def opacity(cls):
+        return noop/sv.Transition.opacity
+
+    @property
+    def shadow(cls):
+        return noop/sv.Transition.shadow
+
+    @property
+    def transform(cls):
+        return noop/sv.Transition.transform
+
+Transition = _Transition()
+
 
 
 class _GridAuto:
