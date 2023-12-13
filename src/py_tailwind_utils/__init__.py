@@ -82,7 +82,12 @@ from .style_values_noop import VerticalAlign as va
 from .style_values_noop import Visibility as visibility
 from .style_values_noop import WrapAround as wa
 from .style_values_noop import Transition as transition
+from .style_values_noop import ScreenReaders as srs
+from .style_values_noop import Whitespace as whitespace
+from .style_values_noop import Overflow as overflow
+from .style_values_noop import OverflowX as overflowx
+from .style_values_noop import OverflowY as overflowy
+
 from .utils import gradient
 from .valuetags import *
-
 __version__ = "1.1.1"

@@ -66,7 +66,7 @@ class _IDivExpr:
         if isinstance(self.tagstr, _IDivExpr) and isinstance(self.arg2, TagBase):
             return self.tagstr.evaluate(self.arg2.evaluate(val))
         if isinstance(self.tagstr, _IDivExpr) and (
-            isinstance(self.arg2, int) or isinstance(self.arg2, str)
+            isinstance(self.arg2, int) or isinstance(self.arg2, str) or isinstance(self.arg2, float)
         ):
             return self.tagstr.evaluate(str(self.arg2))
         if isinstance(self.tagstr, _IDivExpr) and isinstance(self.arg2, _ColorBase):
@@ -76,7 +76,6 @@ class _IDivExpr:
             isinstance(self.arg2, TagBase) or isinstance(self.arg2, _ColorBase)
         ):
             ares = self.arg2.evaluate(val)
-            print ("$$ = ", tstr(self.arg2))
             # hardwired :( <-- sad day for humanity
             if tstr(self.arg2) == "auto":
                 ares = "-" + ares
@@ -92,12 +91,11 @@ class _IDivExpr:
             return self.tagstr.format(val=ares)
 
         if isinstance(self.tagstr, str) and (
-            isinstance(self.arg2, int) or isinstance(self.arg2, str)
+            isinstance(self.arg2, int) or isinstance(self.arg2, str) or isinstance(self.arg2, float)
         ):
             # this can introduce double ; need a more logicial strategy
             tmp = self.tagstr.format(val="-" + str(self.arg2))
             return tmp.replace("--", "-")
-
         if isinstance(self.tagstr, str) and (
             isinstance(self.arg2, Enum) or isinstance(self.arg2, aenum.EnumType)
         ):
@@ -186,7 +184,6 @@ class TagBase:
         else:
             return (cls.elabel, val)
 
-
 def tstr(*args, prefix=""):
     if len(args) > 0:
         if isinstance(args[0], list) or isinstance(args[0], tuple):
@@ -253,7 +250,7 @@ def remove_from_twtag_list(twsty_taglist, twsty_tag):
     assert remove_idx is not None
     twsty_taglist.pop(remove_idx)
 
-
+#@pysnooper.snoop()
 def add_to_twtag_list_internal(twsty_taglist, twsty_tag):
     """
     add the twsty_tag to taglist; override existing elabel.

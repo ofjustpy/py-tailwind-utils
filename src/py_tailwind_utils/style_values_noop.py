@@ -36,69 +36,161 @@ class _DisplayBox:
 
     @property
     def b(cls):
-        return noop / sv.DisplayBox.b
+        return noop / cls._sv_class.b
 
     @property
     def bi(cls):
-        return noop / sv.DisplayBox.bi
+        return noop / cls._sv_class.bi
 
     @property
     def i(cls):
-        return noop / sv.DisplayBox.i
+        return noop / cls._sv_class.i
 
     @property
     def f(cls):
-        return noop / sv.DisplayBox.f
+        return noop / cls._sv_class.f
 
     @property
     def fi(cls):
-        return noop / sv.DisplayBox.fi
+        return noop / cls._sv_class.fi
 
     @property
     def t(cls):
-        return noop / sv.DisplayBox.t
+        return noop / cls._sv_class.t
+
+    @property
+    def it(cls):
+        return noop / cls._sv_class.it
+
+    @property
+    def tcaption(cls):
+        return noop / cls._sv_class.tcaption
+
+    @property
+    def tcell(cls):
+        return noop / cls._sv_class.tcell
+
+    @property
+    def tc(cls):
+        return noop / cls._sv_class.tc
+
+    @property
+    def tcg(cls):
+        return noop / cls._sv_class.tcg
+
+    @property
+    def thg(cls):
+        return noop / cls._sv_class.thg
+
+    @property
+    def tfg(cls):
+        return noop / cls._sv_class.tfg
+
+    @property
+    def thg(cls):
+        return noop / cls._sv_class.thg    
+
+    @property
+    def trg(cls):
+        return noop / cls._sv_class.trg
+
+    @property
+    def tr(cls):
+        return noop / cls._sv_class.tr
+
+    @property
+    def flowroot(cls):
+        return noop / cls._sv_class.flowroot
 
     @property
     def g(cls):
-        return noop / sv.DisplayBox.g
+        return noop / cls._sv_class.g
+
+    @property
+    def ig(cls):
+        return noop / cls._sv_class.ig
+
+    @property
+    def contents(cls):
+        return noop / cls._sv_class.contents
+
+    @property
+    def li(cls):
+        return noop / cls._sv_class.li
+
+    @property
+    def h(cls):
+        return noop / cls._sv_class.h
+    
+    
+# class _DisplayBox:
+#     _sv_class = sv.DisplayBox
+
+#     @property
+#     def b(cls):
+#         return noop / sv.DisplayBox.b
+
+#     @property
+#     def bi(cls):
+#         return noop / sv.DisplayBox.bi
+
+#     @property
+#     def i(cls):
+#         return noop / sv.DisplayBox.i
+
+#     @property
+#     def f(cls):
+#         return noop / sv.DisplayBox.f
+
+#     @property
+#     def fi(cls):
+#         return noop / sv.DisplayBox.fi
+
+#     @property
+#     def t(cls):
+#         return noop / sv.DisplayBox.t
+
+#     @property
+#     def g(cls):
+#         return noop / sv.DisplayBox.g
 
 
 DisplayBox = _DisplayBox()
 
 
-class _BoxLayout:
-    _sv_class = sv.BoxLayout
+# class _BoxLayout:
+#     _sv_class = sv.BoxLayout
 
-    @property
-    def b(cls):
-        return noop / sv.BoxLayout.b
+#     @property
+#     def b(cls):
+#         return noop / sv.BoxLayout.b
 
-    @property
-    def bi(cls):
-        return noop / sv.BoxLayout.bi
+#     @property
+#     def bi(cls):
+#         return noop / sv.BoxLayout.bi
 
-    @property
-    def i(cls):
-        return noop / sv.BoxLayout.i
+#     @property
+#     def i(cls):
+#         return noop / sv.BoxLayout.i
 
-    @property
-    def f(cls):
-        return noop / sv.BoxLayout.f
+#     @property
+#     def f(cls):
+#         return noop / sv.BoxLayout.f
 
-    @property
-    def fi(cls):
-        return noop / sv.BoxLayout.fi
+#     @property
+#     def fi(cls):
+#         return noop / sv.BoxLayout.fi
 
-    @property
-    def t(cls):
-        return noop / sv.BoxLayout.t
+#     @property
+#     def t(cls):
+#         return noop / sv.BoxLayout.t
 
-    @property
-    def g(cls):
-        return noop / sv.BoxLayout.g
+#     @property
+#     def g(cls):
+#         return noop / sv.BoxLayout.g
 
 
-BoxLayout = _BoxLayout()
+# BoxLayout = _BoxLayout()
 
 
 class _WrapAround:
@@ -550,7 +642,7 @@ FontStyle = _FontStyle()
 
 
 class _FontSmoothing:
-    _sv_class = sv.FontStyle
+    _sv_class = sv.FontSmoothing
 
     @property
     def a(cls):
@@ -859,6 +951,10 @@ class _BorderRadius:
         return noop / sv.BorderRadius.none
 
     @property
+    def _(cls):
+        return noop / sv.BorderRadius._
+
+    @property
     def xl(cls):
         return noop / sv.BorderRadius.xl
 
@@ -1002,12 +1098,12 @@ class _Table:
 Table = _Table()
 
 
-# class _BoxTopo:
-#     _sv_class = sv.BoxTopo
+class _BoxTopo:
+    _sv_class = sv.BoxTopo
 
-#     @property
-#     def bd(cls):
-#         return noop / sv.BoxTopo.bd
+    @property
+    def bd(cls):
+        return noop / sv.BoxTopo.bd
 
 #     @property
 #     def container(cls):
@@ -1108,6 +1204,115 @@ class _GridFlow:
 
 GridFlow = _GridFlow()
 
+class _Whitespace:
+    _sv_class = sv.Whitespace
+
+    @property
+    def normal(cls):
+        return noop / sv.Whitespace.normal
+
+    @property
+    def nowrap(cls):
+        return noop / sv.Whitespace.nowrap
+
+    @property
+    def pre(cls):
+        return noop / sv.Whitespace.pre
+
+    @property
+    def pre_line(cls):
+        return noop / sv.Whitespace.pre_line
+
+    @property
+    def pre_wrap(cls):
+        return noop / sv.Whitespace.pre_wrap
+
+    @property
+    def break_spaces(cls):
+        return noop / sv.Whitespace.break_spaces
+    
+Whitespace = _Whitespace()
+
+
+class _Overflow:
+    _sv_class = sv.Overflow
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def hidden(cls):
+        return noop / cls._sv_class.hidden
+
+    @property
+    def clip(cls):
+        return noop / cls._sv_class.clip
+
+    @property
+    def visible(cls):
+        return noop / cls._sv_class.visible
+
+    @property
+    def scroll(cls):
+        return noop / cls._sv_class.scroll
+
+Overflow = _Overflow()
+
+
+class _OverflowX:
+    _sv_class = sv.OverflowX
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def hidden(cls):
+        return noop / cls._sv_class.hidden
+
+    @property
+    def clip(cls):
+        return noop / cls._sv_class.clip
+
+    @property
+    def visible(cls):
+        return noop / cls._sv_class.visible
+
+    @property
+    def scroll(cls):
+        return noop / cls._sv_class.scroll
+
+OverflowX = _OverflowX()
+
+
+class _OverflowY:
+    _sv_class = sv.OverflowY
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def hidden(cls):
+        return noop / cls._sv_class.hidden
+
+    @property
+    def clip(cls):
+        return noop / cls._sv_class.clip
+
+    @property
+    def visible(cls):
+        return noop / cls._sv_class.visible
+
+    @property
+    def scroll(cls):
+        return noop / cls._sv_class.scroll
+
+OverflowY = _OverflowY()
+
+
+    
 class _Transition:
     _sv_class = sv.Transition
     @property
@@ -1180,6 +1385,18 @@ class _GridAuto:
 
 GridAuto = _GridAuto()
 
+class _ScreenReaders:
+    _sv_class = sv.ScreenReaders
+    
+    @property
+    def only(cls):
+        return noop / sv.ScreenReaders.only
+
+    @property
+    def notonly(cls):
+        return noop / sv.ScreenReaders.notonly
+
+ScreenReaders = _ScreenReaders()
 
 def filter(name):
     if hasattr(current_module, "_" + name):

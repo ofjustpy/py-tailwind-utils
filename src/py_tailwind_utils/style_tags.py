@@ -91,6 +91,7 @@ _tw_keywords = [
     "invisible",
     "absolute",
     "grow",
+    "px"
 ]
 
 for kw in _tw_keywords:
@@ -125,6 +126,7 @@ _tw_keywords_val = [
     "gap",
     "outline",
     "divide",
+    "rotate"
 ]
 for kw in _tw_keywords_val:
     globals()[f"_{kw}"] = type(
@@ -209,15 +211,15 @@ class _mr(TagBase):
 mr = _mr()
 
 
-class _ovf(TagBase):
-    tagstr = "overflow-{val}"
-    tagops = []
-    taghelp = "overflow"
-    elabel = "ovf"
-    stemval = "overflow"
+# class _ovf(TagBase):
+#     tagstr = "overflow-{val}"
+#     tagops = []
+#     taghelp = "overflow"
+#     elabel = "ovf"
+#     stemval = "overflow"
 
 
-ovf = _ovf()
+# ovf = _ovf()
 
 
 class _pd(TagBase):
@@ -295,6 +297,40 @@ class _st(TagBase):
 
 
 st = _st()
+
+
+class _ss(TagBase):
+    "side start based on text direction"
+    tagstr = "s-{val}"
+    tagops = []
+    taghelp = "side start"
+    elabel = "ss"
+    stemval = "s"
+
+
+ss = _ss()
+
+class _se(TagBase):
+    "side start based on text direction"
+    tagstr = "e-{val}"
+    tagops = []
+    taghelp = "side end"
+    elabel = "se"
+    stemval = "e"
+
+
+se = _se()
+
+class _np(TagBase):
+    "negative prefix for margins"
+    tagstr = "-{val}"
+    tagops = []
+    taghelp = "negative prefix"
+    elabel = "np"
+    stemval = "-"
+
+
+np = _np()
 
 
 class _top(TagBase):

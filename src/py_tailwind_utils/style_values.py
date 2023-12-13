@@ -61,12 +61,35 @@ class DisplayBox(Enum):
     f = "flex"
     fi = "inline-flex"
     t = "table"
+    it = "inline-table"
+    tcaption = "table-caption"
+    tcell = "table-cell"
+    tc = "table-column"
+    tcg = "table-column-group"
+    tfg = "table-footer-group"
+    thg = "table-header-group"  # Changed from hogg to thg
+    trg = "table-row-group"
+    tr = "table-row"  # Changed from ro to tr
+    flowroot = "flow-root"
     g = "grid"
-    # TBD: add more docs/display
-    pass
+    ig = "inline-grid"
+    contents = "contents"
+    li = "list-item"
+    h = "hidden"
+
+# class DisplayBox(Enum):
+#     b = "block"
+#     bi = "inline-block"
+#     i = "inline"
+#     f = "flex"
+#     fi = "inline-flex"
+#     t = "table"
+#     g = "grid"
+#     # TBD: add more docs/display
+#     pass
 
 
-BoxLayout = DisplayBox
+#BoxLayout = DisplayBox
 
 # docs/float
 
@@ -338,6 +361,7 @@ class BorderRadius(Enum):
     lg = "rounded-lg"
     full = "rounded-full"
     none = "rounded-none"
+    _ = "rounded"
     xl = "rounded-xl"
     xl2 = "rounded-2xl"
     xl3 = "rounded-3xl"
@@ -401,10 +425,10 @@ class Table(Enum):
 
 
 # Layout
-# class BoxTopo(Enum):
-#     bd = "border"
-#     container = "container"
-#     pass
+class BoxTopo(Enum):
+    bd = "border"
+    # container = "container"
+    pass
 
 
 class PlacementPosition(Enum):
@@ -439,6 +463,14 @@ class GridFlow(Enum):
     pass
 
 
+class Whitespace(Enum):
+    normal = "whitespace-normal"
+    nowrap = "whitespace-nowrap"
+    pre = "whitespace-pre"
+    pre_line = "whitespace-pre-line"
+    pre_wrap = "whitespace-pre-wrap"
+    break_spaces = "whitespace-break-spaces"
+    
 class GridAuto(Enum):
     cauto = "grid-cols-auto"
     cmin = "grid-cols-min"
@@ -457,6 +489,33 @@ class Transition(Enum):
     opacity = "transition-opacity"
     shadow = "transition-shadow"
     transform = "transition-transform"
+
+class ScreenReaders(Enum):
+    only = "sr-only"
+    notonly = "not-sr-only"
+
+class Overflow(Enum):
+    auto = "overflow-auto"
+    hidden = "overflow-hidden"
+    clip = "overflow-clip"
+    visible = "overflow-visible"
+    scroll = "overflow-scroll"
+
+class OverflowX(Enum):
+    auto = "overflow-x-auto"
+    hidden = "overflow-x-hidden"
+    clip = "overflow-x-clip"
+    visible = "overflow-x-visible"
+    scroll = "overflow-x-scroll"
+
+class OverflowY(Enum):
+    auto = "overflow-y-auto"
+    hidden = "overflow-y-hidden"
+    clip = "overflow-y-clip"
+    visible = "overflow-y-visible"
+    scroll = "overflow-y-scroll"        
+
+    
     
 current_module = sys.modules[__name__]
 styValueDict = dict(

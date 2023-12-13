@@ -44,6 +44,9 @@ class _ColorBase:
         # we use black/0. this is done to maintain
         # consistency
 
+        if colorval == "":
+            return cls.mycolor
+        
         if colorval == "0":
             return cls.mycolor
         if colorval[-1] != "0":
