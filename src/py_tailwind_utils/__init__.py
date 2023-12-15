@@ -64,6 +64,7 @@ from .style_values_noop import GridFlow as gf
 from .style_values_noop import JustifyContent as jc
 from .style_values_noop import JustifyItems as ji
 from .style_values_noop import JustifySelf as js
+from .style_values_noop import AlignSelf as twas
 from .style_values_noop import LetterSpace as ls
 from .style_values_noop import LineHeight as lh
 from .style_values_noop import ListItems as li
@@ -87,6 +88,13 @@ from .style_values_noop import Whitespace as whitespace
 from .style_values_noop import Overflow as overflow
 from .style_values_noop import OverflowX as overflowx
 from .style_values_noop import OverflowY as overflowy
+from .style_values_noop import PointerEvents as pointerevents
+from .style_values_noop import AspectRatio as aspectratio
+from .style_values_noop import Cursor as cursor
+from .style_values_noop import BGRepeat as bgrepeat
+from .style_values_noop import LineClamp as lineclamp
+from .style_values_noop import Animation as animation
+from .style_values_noop import BreakInside as breakinside
 
 from .utils import gradient
 from .valuetags import *

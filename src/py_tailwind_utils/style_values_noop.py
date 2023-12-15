@@ -1110,7 +1110,7 @@ class _BoxTopo:
 #         return noop / sv.BoxTopo.container
 
 
-# BoxTopo = _BoxTopo()
+BoxTopo = _BoxTopo()
 
 
 class _PlacementPosition:
@@ -1398,6 +1398,214 @@ class _ScreenReaders:
 
 ScreenReaders = _ScreenReaders()
 
+class _PointerEvents:
+    _sv_class = sv.PointerEvents
+
+    @property
+    def none(cls):
+        return noop / cls._sv_class.none
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+    
+PointerEvents = _PointerEvents()
+
+class _AspectRatio:
+    _sv_class = sv.AspectRatio
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def square(cls):
+        return noop / cls._sv_class.square
+
+    @property
+    def video(cls):
+        return noop / cls._sv_class.video
+
+AspectRatio = _AspectRatio()
+
+class _Cursor:
+    _sv_class = sv.Cursor
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def default(cls):
+        return noop / cls._sv_class.default
+
+    @property
+    def pointer(cls):
+        return noop / cls._sv_class.pointer
+
+    @property
+    def wait(cls):
+        return noop / cls._sv_class.wait
+
+    @property
+    def text(cls):
+        return noop / cls._sv_class.text
+
+    @property
+    def move(cls):
+        return noop / cls._sv_class.move
+
+    @property
+    def help(cls):
+        return noop / cls._sv_class.help
+
+    @property
+    def not_allowed(cls):
+        return noop / cls._sv_class.not_allowed
+
+    @property
+    def none(cls):
+        return noop / cls._sv_class.none
+
+Cursor = _Cursor()
+
+class _AlignSelf:
+    _sv_class = sv.AlignSelf
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def start(cls):
+        return noop / cls._sv_class.start
+
+    @property
+    def end(cls):
+        return noop / cls._sv_class.end
+
+    @property
+    def center(cls):
+        return noop / cls._sv_class.center
+
+    @property
+    def stretch(cls):
+        return noop / cls._sv_class.stretch
+
+    @property
+    def baseline(cls):
+        return noop / cls._sv_class.baseline
+
+AlignSelf = _AlignSelf()
+
+class _BGRepeat:
+    _sv_class = sv.BackgroundRepeat
+
+    @property
+    def repeat(cls):
+        return noop / cls._sv_class.repeat
+
+    @property
+    def no_repeat(cls):
+        return noop / cls._sv_class.no_repeat
+
+    @property
+    def repeat_x(cls):
+        return noop / cls._sv_class.repeat_x
+
+    @property
+    def repeat_y(cls):
+        return noop / cls._sv_class.repeat_y
+
+    @property
+    def repeat_round(cls):
+        return noop / cls._sv_class.repeat_round
+
+    @property
+    def repeat_space(cls):
+        return noop / cls._sv_class.repeat_space
+
+BGRepeat = _BGRepeat()
+
+
+class _LineClamp:
+    _sv_class = sv.LineClamp
+
+    @property
+    def one(cls):
+        return noop / cls._sv_class.one
+
+    @property
+    def two(cls):
+        return noop / cls._sv_class.two
+
+    @property
+    def three(cls):
+        return noop / cls._sv_class.three
+
+    @property
+    def four(cls):
+        return noop / cls._sv_class.four
+
+    @property
+    def five(cls):
+        return noop / cls._sv_class.five
+
+    @property
+    def six(cls):
+        return noop / cls._sv_class.six
+
+    @property
+    def none(cls):
+        return noop / cls._sv_class.none
+
+LineClamp = _LineClamp()
+
+class _Animation:
+    _sv_class = sv.Animation
+
+    @property
+    def none(cls):
+        return noop / cls._sv_class.none
+
+    @property
+    def spin(cls):
+        return noop / cls._sv_class.spin
+
+    @property
+    def ping(cls):
+        return noop / cls._sv_class.ping
+
+    @property
+    def pulse(cls):
+        return noop / cls._sv_class.pulse
+
+    @property
+    def bounce(cls):
+        return noop / cls._sv_class.bounce
+
+Animation = _Animation()
+
+class _BreakInside:
+    _sv_class = sv.BreakInside
+
+    @property
+    def auto(cls):
+        return noop / cls._sv_class.auto
+
+    @property
+    def avoid(cls):
+        return noop / cls._sv_class.avoid
+
+    @property
+    def avoid_page(cls):
+        return noop / cls._sv_class.avoid_page
+
+    @property
+    def avoid_column(cls):
+        return noop / cls._sv_class.avoid_column
+
+BreakInside =  _BreakInside()   
 def filter(name):
     if hasattr(current_module, "_" + name):
         if isinstance(getattr(current_module, "_" + name), type):

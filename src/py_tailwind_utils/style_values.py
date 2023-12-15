@@ -180,6 +180,13 @@ class JustifySelf(Enum):
     stretch = "justify-self-stretch"
 
 
+class AlignSelf(Enum):
+    auto = "self-auto"
+    start = "self-start"
+    end = "self-end"
+    center = "self-center"
+    stretch = "self-stretch"
+    baseline = "self-baseline"
 class AlignContent(Enum):
     start = "content-start"
     end = "content-end"
@@ -398,11 +405,26 @@ class BoxShadow(Enum):
     inner = "shadow-inner"
     pass
 
+class LineClamp(Enum):
+    one = "line-clamp-1"
+    two = "line-clamp-2"
+    three = "line-clamp-3"
+    four = "line-clamp-4"
+    five = "line-clamp-5"
+    six = "line-clamp-6"
+    none = "line-clamp-none"
+    
 
+    
 class Table(Enum):
     auto = "table-auto"
     fixed = "table-fixed"
 
+class BreakInside(Enum):
+    auto = "break-inside-auto"
+    avoid = "break-inside-avoid"
+    avoid_page = "break-inside-avoid-page"
+    avoid_column = "break-inside-avoid-column"    
 
 # class Transition(Enum):
 #     none="transition-none"
@@ -516,6 +538,42 @@ class OverflowY(Enum):
     scroll = "overflow-y-scroll"        
 
     
+
+class PointerEvents(Enum):
+    none = "pointer-events-none"
+    auto = "pointer-events-auto"
+
+class AspectRatio(Enum):
+    auto = "aspect-auto"
+    square = "aspect-square"
+    video = "aspect-video"
+
+
+class Cursor(Enum):
+    auto = "cursor-auto"
+    default = "cursor-default"
+    pointer = "cursor-pointer"
+    wait = "cursor-wait"
+    text = "cursor-text"
+    move = "cursor-move"
+    help = "cursor-help"
+    not_allowed = "cursor-not-allowed"
+    none = "cursor-none"
+
+class BackgroundRepeat(Enum):
+    repeat = "bg-repeat"
+    no_repeat = "bg-no-repeat"
+    repeat_x = "bg-repeat-x"
+    repeat_y = "bg-repeat-y"
+    repeat_round = "bg-repeat-round"
+    repeat_space = "bg-repeat-space"
+
+class Animation(Enum):
+    none = "animate-none"
+    spin = "animate-spin"
+    ping = "animate-ping"
+    pulse = "animate-pulse"
+    bounce = "animate-bounce"
     
 current_module = sys.modules[__name__]
 styValueDict = dict(

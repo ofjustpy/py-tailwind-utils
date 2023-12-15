@@ -8,7 +8,7 @@ class _boxshadow(TagBase):
     tagops = []
     taghelp = "shadow"
     elabel = "boxshadow"
-    stemval = "boxshadow"
+    stemval = "shadow"
 
 boxshadow = _boxshadow()
 
@@ -23,6 +23,16 @@ class _bd(TagBase):
 
 
 bd = _bd()
+
+class _priority(TagBase):
+    tagstr = "!{val}"
+    tagops = []
+    taghelp = "priority operator"
+    elabel = "priority"
+    stemval = "!"
+
+
+priority = _priority()
 
 
 class _from(TagBase):
@@ -52,10 +62,21 @@ class _via(TagBase):
     tagops = []
     taghelp = "gradient via color"
     elabel = "via"
-    stemval = "to"
+    stemval = "via"
 
 
 via_ = _via()
+
+
+class _twpx(TagBase):
+    tagstr = "px"
+    tagops = []
+    taghelp = "px"
+    elabel = "px"
+    stemval = "px"
+
+
+twpx = _twpx()
 
 
 class _cc(TagBase):
@@ -91,7 +112,7 @@ _tw_keywords = [
     "invisible",
     "absolute",
     "grow",
-    "px"
+    "peer"
 ]
 
 for kw in _tw_keywords:
@@ -125,8 +146,20 @@ _tw_keywords_val = [
     "stroke",
     "gap",
     "outline",
+    "underline",
     "divide",
-    "rotate"
+    "rotate",
+    "shrink",
+    "translate",
+    "gradient",
+    "to",
+    "via"
+    "underline",
+    "rounded",
+    "scale",
+    "basis",
+    "columns"
+    
 ]
 for kw in _tw_keywords_val:
     globals()[f"_{kw}"] = type(
@@ -153,6 +186,16 @@ class _end(TagBase):
 
 
 end = _end()
+
+class _ul(TagBase):
+    tagstr = "underline"
+    tagops = []
+    taghelp = "underline"
+    elabel = "underline"
+    stemval = "underline"
+
+
+ul = _ul()
 
 
 class _fc(TagBase):
@@ -320,6 +363,91 @@ class _se(TagBase):
 
 
 se = _se()
+
+class _sss(TagBase):
+    "side start based on text direction"
+    tagstr = "ss-{val}"
+    tagops = []
+    taghelp = "side end"
+    elabel = "sss"
+    stemval = "ss"
+
+
+sss = _sss()
+
+
+class _sse(TagBase):
+    "side start based on text direction"
+    tagstr = "se-{val}"
+    tagops = []
+    taghelp = "side end"
+    elabel = "sse"
+    stemval = "se"
+
+
+sse = _sse()
+
+
+class _ses(TagBase):
+    "side start based on text direction"
+    tagstr = "es-{val}"
+    tagops = []
+    taghelp = "side end"
+    elabel = "ses"
+    stemval = "es"
+
+
+ses = _ses()
+
+
+class _see(TagBase):
+    "side start based on text direction"
+    tagstr = "ee-{val}"
+    tagops = []
+    taghelp = "side end"
+    elabel = "see"
+    stemval = "ee"
+
+
+see = _see()
+
+
+
+
+class _ctl(TagBase):
+    tagstr = "tl-{val}"
+    tagops = []
+    taghelp = "ctl"
+    elabel = "top-left"
+    stemval = "tl"
+
+ctl = _ctl()
+
+class _ctr(TagBase):
+    tagstr = "tr-{val}"
+    tagops = []
+    taghelp = "ctr"
+    elabel = "top-right"
+    stemval = "tr"
+
+ctr = _ctr()    
+class _cbl(TagBase):
+    tagstr = "bl-{val}"
+    tagops = []
+    taghelp = "bottom-left"
+    elabel = "cbl"
+    stemval = "bl"
+
+cbl = _cbl()
+
+class _cbr(TagBase):
+    tagstr = "br-{val}"
+    tagops = []
+    taghelp = "cbr"
+    elabel = "cbr"
+    stemval = "br"
+
+cbr = _cbr()
 
 class _np(TagBase):
     "negative prefix for margins"
