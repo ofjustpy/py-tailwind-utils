@@ -22,6 +22,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+
 import logging
 import os
 import sys
@@ -45,22 +46,10 @@ class _IDivExpr:
         self.modifier_chain = []
 
     def __truediv__(self, arg):
-        # print ("calling IDivExpr for IDivExpr: ", arg)
         tt = _IDivExpr(self, self.arg2.elabel, arg)
         return tt
-        # if isinstance(arg, _ColorBase):
-        #     res = _IDivExpr(self, arg)
-        #     return res
-        # elif isinstance(arg, TagBase):
-        #     return _IDivExpr(self, arg)
-        # return _IDivExpr(self, arg)
 
-
-    #@pysnooper.snoop()
     def evaluate(self, val=""):
-        # print("eval = ", self, " ", self.tagstr, " ", self.arg2, " ", val)
-        # print("eval = ", " ", type(self.tagstr),
-        #       " ", type(self.arg2), " ", val)
         if isinstance(self.tagstr, str) and isinstance(self.arg2, _IDivExpr):
             return self.tagstr.format(val=self.arg2.evaluate(val))
         if isinstance(self.tagstr, _IDivExpr) and isinstance(self.arg2, TagBase):
@@ -110,9 +99,6 @@ class _IDivExpr:
         raise ValueError
 
     def keyvaleval(self, val=""):
-        # print("eval = ", self, " ", self.tagstr, " ", self.arg2, " ", val)
-        # print ("eval = ", self, " ", type(self.tagstr), " ", type(self.arg2), " ", val)
-        # print("calling keyvaleval ", self)
         if isinstance(self.tagstr, _IDivExpr) and isinstance(self.arg2, TagBase):
             return self.tagstr.evaluate(self.arg2.keyvaleval(val))
         if isinstance(self.tagstr, _IDivExpr) and (
@@ -147,12 +133,6 @@ class _IDivExpr:
         )
         print("evaluate: unkown case ", self.tagstr, " ", self.arg2, " ", val)
         assert 0
-
-    # def __repr__(self):
-    #     rstr = self.evaluate()
-    #     if rstr[-1] == "-":
-    #         rstr = rstr[0:-1]
-    #     return rstr
 
 
 class TagBase:
@@ -189,7 +169,6 @@ def tstr(*args, prefix=""):
         if isinstance(args[0], list) or isinstance(args[0], tuple):
             raise ValueError("error in tstr argument passing")
 
-    # print("=============begin tstr============")
     res = ""
     for arg in args:
         # every tailwind tag should have modifier chain eventually
@@ -207,7 +186,6 @@ def tstr(*args, prefix=""):
             res += f"{modifier_prefix}{prefix}" + arg.tagstr + " "
         if isinstance(arg, str):
             res += f"{prefix}" + arg + " "
-    # print("=============begin tstr============")
     return res.strip()
 
 
@@ -249,8 +227,6 @@ def remove_from_twtag_list(twsty_taglist, twsty_tag):
 
     assert remove_idx is not None
     twsty_taglist.pop(remove_idx)
-
-#@pysnooper.snoop()
 def add_to_twtag_list_internal(twsty_taglist, twsty_tag):
     """
     add the twsty_tag to taglist; override existing elabel.

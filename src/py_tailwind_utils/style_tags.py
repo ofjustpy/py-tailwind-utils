@@ -159,6 +159,7 @@ _tw_keywords_val = [
     "scale",
     "basis",
     "columns"
+    "grayscale"
     
 ]
 for kw in _tw_keywords_val:

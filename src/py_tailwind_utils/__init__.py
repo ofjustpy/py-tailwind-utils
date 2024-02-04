@@ -50,8 +50,8 @@ from .style_values_noop import BorderRadius as bdr
 from .style_values_noop import BorderStyle as bds
 from .style_values_noop import BoxShadow as shadow
 from .style_values_noop import BoxSizing as boxsz
-#from .style_values_noop import BoxTopo as bt
-from .style_values_noop import ClearWrap as wc
+from .style_values_noop import BoxTopo as boxtopo
+from .style_values_noop import ClearWrap as cw
 from .style_values_noop import DisplayBox as db
 from .style_values_noop import FlexLayout as flx
 from .style_values_noop import FontFamily as ff

@@ -11,9 +11,7 @@ from .colors import _tw_color_list, get_color_instance
 
 sv_map = {}
 for en, eo in sv.styValueDict.items():
-    # print (en, " ", eo)
     enum_class = eo._sv_class
-    name = enum_class.__name__
     for _ in enum_class:
         sv_map[_.value] = getattr(eo, _.name)
         
@@ -106,7 +104,6 @@ def encode_style_tag(the_meat, all_modifiers):
         
         
     meat_parts = the_meat.split("-")
-    print (meat_parts, " ", len(meat_parts))
     restag = None
     if len(meat_parts) == 1:
         assert meat_parts[0] in st_map
@@ -154,7 +151,7 @@ def encode_style_tag(the_meat, all_modifiers):
         restag = priority/restag
         
     tags = [restag]
-    for mod in all_modifiers:
+    for mod in reversed(all_modifiers):
         tags = modify(*tags, modifier=mod)
         
 
@@ -180,9 +177,9 @@ def encode_twstr(twstr):
             continue
         if 'swiper' in _:
             continue
-        if "/" in _:
-            print(f"DEBUG:error-/:  skipping  {_} because of /")
-            continue
+        # if "/" in _:
+        #     print(f"DEBUG:error-/:  skipping  {_} because of /")
+        #     continue
         if 'animate-background' in _:
             print(f"DEBUG:error-animate:  skipping  {_} because of animate-background")
             continue
@@ -198,10 +195,14 @@ def encode_twstr(twstr):
         
         if the_meat in sv_map:
             restag = sv_map[the_meat]
-            restag = noop/restag
-            tags = [restag]
-            for mod in all_modifiers:
-                tags = modify(*tags, modifier=mod)
+            # no need for noop -- already present in sv_map
+            #restag = noop/restag # so simple -- but creates massive bugs noop/noop/style-vale will create big problems
+            
+            res = [restag]
+            for mod in reversed(all_modifiers):
+                res = modify(*res, modifier=mod)
+            assert len(res) == 1
+            tags.append(res[0])
         else:
             res = encode_style_tag(the_meat, all_modifiers)
             if res:
