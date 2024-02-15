@@ -53,6 +53,8 @@ from aenum import Enum
 # hidden	display: none;                                #
 ###############################################################
 
+#TODO: Floats
+
 
 class DisplayBox(Enum):
     b = "block"
@@ -95,6 +97,8 @@ class DisplayBox(Enum):
 
 
 class WrapAround(Enum):
+    s = "float-start"
+    e = "float-end"
     r = "float-right"
     l = "float-left"
     n = "float-none"
@@ -330,6 +334,13 @@ class TextTransform(Enum):
     n = "normal-case"
 
 
+class TextWrap(Enum):
+    wrap = "text-wrap"
+    nowrap = "text-nowrap"
+    balance = "text-balance"
+    pretty = "text-pretty"
+    
+    
 class VerticalAlign(Enum):
     top = "align-top"
     middle = "align-middle"
@@ -385,7 +396,15 @@ class BorderStyle(Enum):
     separate = "border-separate"
 
 
-class Outline(Enum):
+class DivideStyle(Enum):
+    solid = "divide-solid"
+    dashed = "divide-dashed"
+    dotted = "divide-dotted"
+    double = "divide-double"
+    none = "divide-none"
+    
+    
+class OutlineStyle(Enum):
     none = "outline-none"
     _ = "outline"
     dashed = "outline-dashed"
@@ -449,6 +468,7 @@ class BreakInside(Enum):
 # Layout
 class BoxTopo(Enum):
     bd = "border"
+    ring = "ring"
     # container = "container"
     pass
 
@@ -480,6 +500,7 @@ class Prose(Enum):
 class GridFlow(Enum):
     row = "grid-flow-row"
     col = "grid-flow-col"
+    dense = "grid-flow-dense"
     rowd = "grid-flow-row-dense"
     cold = "grid-flow-col-dense"
     pass

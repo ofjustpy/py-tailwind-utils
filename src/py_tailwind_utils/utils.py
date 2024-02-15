@@ -23,13 +23,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from .style_tags import bg
-from .style_tags import boxshadow as boxShadowTag
 from .style_tags import from_
-from .style_tags import outline as outlineTag
 from .style_tags import to_
 from .style_tags import via_
-from .style_values import BoxShadow as boxShadowEnum
-from .style_values import Outline as outlineEnum
+
+
 
 
 def gradient(from_color_idvexpr, to_color_idivexpr, via_color_idivexpr=None):
@@ -44,36 +42,3 @@ def gradient(from_color_idvexpr, to_color_idivexpr, via_color_idivexpr=None):
         via_ / via_color_idivexpr,
     ]
 
-
-class _Outline:
-    @classmethod
-    def __truediv__(cls, valprefix):
-        return outlineTag / valprefix
-
-    none = outlineEnum.none
-    _ = outlineEnum._
-    dashed = outlineEnum.dashed
-    dotted = outlineEnum.dotted
-    double = outlineEnum.double
-    hidden = outlineEnum.hidden
-
-
-Outline = _Outline()
-
-
-class _BoxShadow:
-    @classmethod
-    def __truediv__(cls, valprefix):
-        return boxShadowTag / valprefix
-
-    sm = boxShadowEnum.sm
-    _ = boxShadowEnum._
-    md = boxShadowEnum.md
-    lg = boxShadowEnum.lg
-    xl = boxShadowEnum.xl
-    xl2 = boxShadowEnum.xl2
-    none = boxShadowEnum.none
-    inner = boxShadowEnum.inner
-
-
-BoxShadow = _BoxShadow()

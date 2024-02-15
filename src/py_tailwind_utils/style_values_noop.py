@@ -196,6 +196,17 @@ DisplayBox = _DisplayBox()
 class _WrapAround:
     _sv_class = sv.WrapAround
 
+    
+    @property
+    def s(cls):
+        return noop / sv.WrapAround.s
+
+    
+    @property
+    def e(cls):
+        return noop / sv.WrapAround.e
+
+    
     @property
     def r(cls):
         return noop / sv.WrapAround.r
@@ -888,6 +899,29 @@ class _TextTransform:
 
 TextTransform = _TextTransform()
 
+class _TextWrap:
+    _sv_class = sv.TextWrap
+    
+    @property
+    def wrap(cls):
+        return noop/sv.TextWrap.wrap
+    
+
+    @property
+    def nowrap(cls):
+        return noop/sv.TextWrap.nowrap
+
+    
+    @property
+    def balance(cls):
+        return noop/sv.TextWrap.balance
+
+    
+    @property
+    def pretty(cls):
+        return noop/sv.TextWrap.pretty
+
+TextWrap = _TextWrap()
 
 class _VerticalAlign:
     _sv_class = sv.VerticalAlign
@@ -1005,39 +1039,64 @@ class _BorderStyle:
 BorderStyle = _BorderStyle()
 
 
-class _Outline:
-    _sv_class = sv.Outline
-
-    @classmethod
-    def __truediv__(cls, valprefix):
-        return outlineTag / valprefix
+class _DivideStyle:
+    _sv_class = sv.DivideStyle
 
     @property
-    def none(cls):
-        return noop / sv.Outline.none
-
-    @property
-    def _(cls):
-        return noop / sv.Outline._
+    def solid(cls):
+        return noop / sv.DivideStyle.solid
 
     @property
     def dashed(cls):
-        return noop / sv.Outline.dashed
+        return noop / sv.DivideStyle.dashed
 
     @property
     def dotted(cls):
-        return noop / sv.Outline.dotted
+        return noop / sv.DivideStyle.dotted
 
     @property
     def double(cls):
-        return noop / sv.Outline.double
+        return noop / sv.DivideStyle.double
+
+    @property
+    def none(cls):
+        return noop / sv.DivideStyle.none
+
+DivideStyle = _DivideStyle()    
+    
+class _OutlineStyle:
+    _sv_class = sv.OutlineStyle
+
+    # @classmethod
+    # def __truediv__(cls, valprefix):
+    #     return outlineTag / valprefix
+
+    @property
+    def none(cls):
+        return noop / sv.OutlineStyle.none
+
+    @property
+    def _(cls):
+        return noop / sv.OutlineStyle._
+
+    @property
+    def dashed(cls):
+        return noop / sv.OutlineStyle.dashed
+
+    @property
+    def dotted(cls):
+        return noop / sv.OutlineStyle.dotted
+
+    @property
+    def double(cls):
+        return noop / sv.OutlineStyle.double
 
     @property
     def hidden(cls):
-        return noop / sv.Outline.hidden
+        return noop / sv.OutlineStyle.hidden
 
 
-Outline = _Outline()
+OutlineStyle = _OutlineStyle()
 
 
 class _BoxShadow:
@@ -1105,6 +1164,10 @@ class _BoxTopo:
     def bd(cls):
         return noop / sv.BoxTopo.bd
 
+    @property
+    def ring(cls):
+        return noop / sv.BoxTopo.ring
+    
 #     @property
 #     def container(cls):
 #         return noop / sv.BoxTopo.container
@@ -1193,6 +1256,11 @@ class _GridFlow:
     def col(cls):
         return noop / sv.GridFlow.col
 
+    @property
+    def dense(cls):
+        return noop / sv.GridFlow.dense
+    
+    
     @property
     def rowd(cls):
         return noop / sv.GridFlow.rowd

@@ -41,6 +41,8 @@ from .modifiers import focus
 from .modifiers import hover
 from .modifiers import placeholder
 from .modifiers import selection
+from .modifiers import active
+
 from .modifiers import variant
 from .style_tags import *
 from .style_values_noop import AlignContent as ac
@@ -48,6 +50,8 @@ from .style_values_noop import AlignItems as ai
 from .style_values_noop import BackgroundAttachment as ba
 from .style_values_noop import BorderRadius as bdr
 from .style_values_noop import BorderStyle as bds
+from .style_values_noop import DivideStyle as dvdsty
+
 from .style_values_noop import BoxShadow as shadow
 from .style_values_noop import BoxSizing as boxsz
 from .style_values_noop import BoxTopo as boxtopo
@@ -70,7 +74,7 @@ from .style_values_noop import LineHeight as lh
 from .style_values_noop import ListItems as li
 from .style_values_noop import ObjectFit as of
 from .style_values_noop import ObjectPosition as op
-from .style_values_noop import Outline as outline
+from .style_values_noop import OutlineStyle as outlinesty
 from .style_values_noop import PlaceContent as pc
 from .style_values_noop import PlaceItems as pi
 from .style_values_noop import PlacementPosition as ppos
@@ -79,6 +83,7 @@ from .style_values_noop import Prose as prose
 from .style_values_noop import Table as tbl
 from .style_values_noop import TextAlign as ta
 from .style_values_noop import TextTransform as tt
+from .style_values_noop import TextWrap as textwrap
 from .style_values_noop import VerticalAlign as va
 from .style_values_noop import Visibility as visibility
 from .style_values_noop import WrapAround as wa

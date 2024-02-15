@@ -61,6 +61,9 @@ def hover(*args):
 def focus(*args):
     return modify(*args, modifier="focus")
 
+def active(*args):
+    return modify(*args, modifier="active")
+
 
 # https://tailwindcss.com/docs/hover-focus-and-other-states#pseudo-class-reference
 # focus-within

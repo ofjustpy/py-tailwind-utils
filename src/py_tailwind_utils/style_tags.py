@@ -17,7 +17,7 @@ boxshadow = _boxshadow()
 class _bd(TagBase):
     tagstr = "border-{val}"
     tagops = []
-    taghelp = "border color"
+    taghelp = "border value"
     elabel = "bd"
     stemval = "border"
 
@@ -27,7 +27,7 @@ bd = _bd()
 class _priority(TagBase):
     tagstr = "!{val}"
     tagops = []
-    taghelp = "priority operator"
+    taghelp = "priority"
     elabel = "priority"
     stemval = "!"
 
@@ -112,7 +112,11 @@ _tw_keywords = [
     "invisible",
     "absolute",
     "grow",
-    "peer"
+    "peer",
+    "contain",
+    "reverse",
+    "spacing"
+    
 ]
 
 for kw in _tw_keywords:
@@ -153,13 +157,13 @@ _tw_keywords_val = [
     "translate",
     "gradient",
     "to",
-    "via"
-    "underline",
     "rounded",
     "scale",
     "basis",
-    "columns"
-    "grayscale"
+    "columns",
+    "grayscale",
+    "size",
+    "indent"
     
 ]
 for kw in _tw_keywords_val:
@@ -291,7 +295,7 @@ ph = _ph()
 class _resize(TagBase):
     tagstr = "resize-{val}"
     tagops = []
-    taghelp = ""
+    taghelp = "resize"
     elabel = "resize"
     stemval = "resize"
 
@@ -302,7 +306,7 @@ resize = _resize()
 class _sb(TagBase):
     tagstr = "b-{val}"
     tagops = []
-    taghelp = "side bottom"
+    taghelp = "rounded border: side bottom"
     elabel = "sb"
     stemval = "b"
 
@@ -313,7 +317,7 @@ sb = _sb()
 class _sl(TagBase):
     tagstr = "l-{val}"
     tagops = []
-    taghelp = "left"
+    taghelp = "rounded border: side left"
     elabel = "sl"
     stemval = "l"
 
@@ -324,7 +328,7 @@ sl = _sl()
 class _sr(TagBase):
     tagstr = "r-{val}"
     tagops = []
-    taghelp = "side right"
+    taghelp = "rounded border: side right"
     elabel = "sr"
     stemval = "r"
 
@@ -335,7 +339,7 @@ sr = _sr()
 class _st(TagBase):
     tagstr = "t-{val}"
     tagops = []
-    taghelp = "side top"
+    taghelp = "rounded border: side top"
     elabel = "st"
     stemval = "t"
 
@@ -347,7 +351,7 @@ class _ss(TagBase):
     "side start based on text direction"
     tagstr = "s-{val}"
     tagops = []
-    taghelp = "side start"
+    taghelp = "RTL: side start"
     elabel = "ss"
     stemval = "s"
 
@@ -358,7 +362,7 @@ class _se(TagBase):
     "side start based on text direction"
     tagstr = "e-{val}"
     tagops = []
-    taghelp = "side end"
+    taghelp = "RTL:side end"
     elabel = "se"
     stemval = "e"
 
@@ -369,7 +373,7 @@ class _sss(TagBase):
     "side start based on text direction"
     tagstr = "ss-{val}"
     tagops = []
-    taghelp = "side end"
+    taghelp = "rounded border: top-start"
     elabel = "sss"
     stemval = "ss"
 
@@ -381,7 +385,7 @@ class _sse(TagBase):
     "side start based on text direction"
     tagstr = "se-{val}"
     tagops = []
-    taghelp = "side end"
+    taghelp = "rounded border: top-end "
     elabel = "sse"
     stemval = "se"
 
@@ -393,7 +397,7 @@ class _ses(TagBase):
     "side start based on text direction"
     tagstr = "es-{val}"
     tagops = []
-    taghelp = "side end"
+    taghelp = "rounded border: bottom-start"
     elabel = "ses"
     stemval = "es"
 
@@ -405,7 +409,7 @@ class _see(TagBase):
     "side start based on text direction"
     tagstr = "ee-{val}"
     tagops = []
-    taghelp = "side end"
+    taghelp = "rounded border: bottom-end"
     elabel = "see"
     stemval = "ee"
 
@@ -427,7 +431,7 @@ ctl = _ctl()
 class _ctr(TagBase):
     tagstr = "tr-{val}"
     tagops = []
-    taghelp = "ctr"
+    taghelp = "rounded border: top-right"
     elabel = "top-right"
     stemval = "tr"
 
@@ -435,7 +439,7 @@ ctr = _ctr()
 class _cbl(TagBase):
     tagstr = "bl-{val}"
     tagops = []
-    taghelp = "bottom-left"
+    taghelp = "rounded border: bottom-left"
     elabel = "cbl"
     stemval = "bl"
 
@@ -444,7 +448,7 @@ cbl = _cbl()
 class _cbr(TagBase):
     tagstr = "br-{val}"
     tagops = []
-    taghelp = "cbr"
+    taghelp = "rounded border: bottom right"
     elabel = "cbr"
     stemval = "br"
 
