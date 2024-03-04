@@ -30,15 +30,26 @@ from .style_tags import via_
 
 
 
-def gradient(from_color_idvexpr, to_color_idivexpr, via_color_idivexpr=None):
+def gradient(from_color_idvexpr,
+             to_color_idivexpr,
+             via_color_idivexpr=None,
+             *args,
+             direction="bl"
+             ):
     """
-    for now only considering bg gradient
+    for now only considering bg gradient;
+    direction choices: t, r, b, l, tr, tl, br, bl, 
+    
     """
-
+    vias = []
+    if args:
+        vias = [via_/_ for _ in args]
+        
     return [
-        bg / "gradient-to-r",
+        bg / "gradient-to-t",
         from_ / from_color_idvexpr,
         to_ / to_color_idivexpr,
         via_ / via_color_idivexpr,
+        *vias
     ]
 

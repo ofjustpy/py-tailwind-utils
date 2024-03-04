@@ -6,7 +6,7 @@ from . import style_values as StyV
 from ofjustpy_components.htmlcomponents import Dockbar
 import ofjustpy as oj
 from py_tailwind_utils import *
-
+import ofjustpy_react as ojr
 #color
 # TODO: table
 
@@ -174,6 +174,14 @@ grid_tables_tags = [[StyT.span,
 # Effects and filters Transforms
 # interactivity
 
+
+@ojr.ReactDomino
+def on_twValue_select(dbref, msg, to_ms):
+    sty_value_class = getattr(StyV, dbref.key)
+    sty_value_attr = getattr(sty_value_class, msg.value)
+    return "/tw_styValue_selected", (sty_value_class, sty_value_attr)
+
+
 def build_panel(title, tags, values= []):
     """
     tags: style tags
@@ -183,7 +191,8 @@ def build_panel(title, tags, values= []):
         oj.AD.Button(key = tagC.__class__.__name__[1:],
                      childs = [oj.PC.Span(text=tagC.taghelp, twsty_tags=[fz.sm, fw.medium, pd/x/2, pd/y/3])],
                      value = tagC.elabel,
-                     twsty_tags = [boxtopo.bd, bdr.lg, bd/slate/7, bg/slate/2]
+                     twsty_tags = [boxtopo.bd, bdr.lg, bd/slate/7, bg/slate/2],
+                     on_click = on_twTag_click
                      )     for tagC in tags]
     
 
@@ -192,12 +201,13 @@ def build_panel(title, tags, values= []):
         enum_class = attrClass
         name = enum_class.__name__
         banner_text = name
-        comp_box= oj.AC.Select(key=name,
+        comp_box= oj.AD.Select(key=name,
                                childs = [oj.PC.Option(text = _.value ,
                                                       value=_.name
                                                       )
                                          for _ in enum_class
                                          ],
+                               on_change= on_twValue_select,
                                twsty_tags=[boxtopo.bd, bdr.lg, bd/slate/7, bg/slate/2, pd/x/3, pd/y/2]
                                )
         

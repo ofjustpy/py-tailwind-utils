@@ -64,6 +64,7 @@ class _IDivExpr:
         if isinstance(self.tagstr, str) and (
             isinstance(self.arg2, TagBase) or isinstance(self.arg2, _ColorBase)
         ):
+            
             ares = self.arg2.evaluate(val)
             # hardwired :( <-- sad day for humanity
             if tstr(self.arg2) == "auto":
@@ -151,7 +152,16 @@ class TagBase:
 
     @classmethod
     def evaluate(cls, val):
-        fres = cls.tagstr.format(val=val)
+        if isinstance(cls.tagstr, str) and (
+                isinstance(val, int) or isinstance(val, str) or isinstance(val, float)
+        ):
+            # whats going on here?
+            # margin is marked as m{val}
+            # however if you see mr/4 introduce
+            # then it should be rendered as m-4
+            tmp = cls.tagstr.format(val="-" + str(val))
+            return tmp.replace("--", "-")
+
         return cls.tagstr.format(val=val)
 
     @classmethod
@@ -163,6 +173,7 @@ class TagBase:
             return (cls.elabel, cls.elabel)
         else:
             return (cls.elabel, val)
+
 
 def tstr(*args, prefix=""):
     if len(args) > 0:

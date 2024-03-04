@@ -170,7 +170,7 @@ def dsearch(tdict, dpath):
             else:
                 return None
         else:
-            if isinstance(dlobj, list) or isinstance(dlobj, UserList):
+            if isinstance(dlobj, list) or isinstance(dlobj, UserList) or isinstance(dlobj, int):
                 return None
 
             if curr_keyidx in dlobj:
@@ -228,7 +228,7 @@ def dnew(tdict, dpath, value):
                 assert isinstance(dlobj, list) or isinstance(dlobj, UserList)
                 if dlobj[curr_keyidx]:
                     childobj = dlobj[curr_keyidx]
-                    assert (childobj, dict)
+                    assert isinstance(childobj, dict)
                 else:
                     # We are not sure if we want to turn on tracking changes by default
                     dlobj[curr_keyidx] = Dict(track_changes=True)
