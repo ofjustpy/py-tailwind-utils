@@ -30,7 +30,7 @@ from .style_tags import via_
 
 
 
-def gradient(from_color_idvexpr,
+def build_gradient_expr(from_color_idvexpr,
              to_color_idivexpr,
              via_color_idivexpr=None,
              *args,

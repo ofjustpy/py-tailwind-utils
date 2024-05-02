@@ -31,9 +31,11 @@ from addict_tracking_changes import Dict
 class _ColorBase:
     mycolor = None
     elabel = "color"
-
+    tagstr = None
+    
     @classmethod
     def __truediv__(cls, colorval: str):
+        print ("calling color div")
         return cls.evaluate(str(colorval))
 
     @classmethod
@@ -49,7 +51,7 @@ class _ColorBase:
         
         if colorval == "0":
             return cls.mycolor
-        if colorval[-1] != "0":
+        if len(colorval) == 1 and colorval[-1] != "0":
             return f"{cls.mycolor}-{colorval}00"
         else:
             return f"{cls.mycolor}-{colorval}"
@@ -123,7 +125,7 @@ _tw_color_list = [
 
 for color in _tw_color_list:
     globals()[color.capitalize()] = type(
-        color.capitalize(), (_ColorBase,), {"mycolor": color}
+        color.capitalize(), (_ColorBase,), {"mycolor": color, "tagstr": f"{color}-{{val}}"}
     )
 
     globals()[color] = globals()[color.capitalize()]()

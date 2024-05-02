@@ -8,6 +8,7 @@ from .modifiers import modify
 
 from py_tailwind_utils import mr, st, sl, sb, sr, x, y, auto, pd, np, se, ss,  noop, twpx, priority
 from .colors import _tw_color_list, get_color_instance
+import pysnooper
 
 sv_map = {}
 for en, eo in sv.styValueDict.items():
@@ -53,8 +54,11 @@ def color_value_decoder(tag, terminal=True):
         else:
             return "50"
     except ValueError as e:
-        pass
-    
+        # assume tag is a string
+        # as in "500/50"
+        return tag
+
+
 def encode_tag(tag, terminal=False):
     if terminal:
         if tag == "px":
@@ -72,7 +76,7 @@ def encode_tag(tag, terminal=False):
         return value, None
     except:
         pass
-    
+     
     try:
         value = float(tag)
         return value, None
@@ -81,7 +85,8 @@ def encode_tag(tag, terminal=False):
 
     print ("DEBUG-LOG ; assuming tag is string = ", tag)
     return tag, None
-        
+
+
 def encode_style_tag(the_meat, all_modifiers):
 
     # break modifiers from the utility class
@@ -150,14 +155,29 @@ def encode_style_tag(the_meat, all_modifiers):
     if has_priority_prefix:
         restag = priority/restag
         
-    tags = [restag]
+    tags = [noop/restag]
     for mod in reversed(all_modifiers):
         tags = modify(*tags, modifier=mod)
         
 
     return tags[0]
 
+def check_same_tstr(atstr, btstr):
+    """
+    check if two tailwind directives have excatly the same constructs
+    """
 
+    atags = atstr.split()
+    btags = btstr.split()
+    for atag in atags:
+        assert atag in btags
+
+    for btag in btags:
+        assert btag in atags
+
+    return True
+        
+        
 def encode_twstr(twstr):
     tags = []
     for _ in twstr.split():
@@ -174,7 +194,8 @@ def encode_twstr(twstr):
                  '[-webkit-tap-highlight-color:_transparent]'
                  'swiper-prev-button', # marketing/announcments/ 8-dark.html
                  ]:
-            continue
+            print ("cannot handle set 1: ",_)
+            assert False
         if 'swiper' in _:
             continue
         # if "/" in _:
@@ -182,13 +203,14 @@ def encode_twstr(twstr):
         #     continue
         if 'animate-background' in _:
             print(f"DEBUG:error-animate:  skipping  {_} because of animate-background")
-            continue
+            assert False
+
         if 'transform' in _:
             print(f"DEBUG:error-transform:  skipping  {_} because of transform")
-            continue
+            assert False
         if "[" in _:
             print(f"DEBUG:error-[]:  skipping  {_} because of [")
-            continue
+            assert False
         stuff = _.split(":")
         all_modifiers = stuff[0:-1]
         the_meat = stuff[-1]
@@ -198,14 +220,21 @@ def encode_twstr(twstr):
             # no need for noop -- already present in sv_map
             #restag = noop/restag # so simple -- but creates massive bugs noop/noop/style-vale will create big problems
             
-            res = [restag]
+            res = [noop/restag]
+
             for mod in reversed(all_modifiers):
                 res = modify(*res, modifier=mod)
             assert len(res) == 1
+            
             tags.append(res[0])
         else:
             res = encode_style_tag(the_meat, all_modifiers)
             if res:
                 tags.append(res)
+
+        
+    decoded = tstr(*tags)
+    # make sure the decoded is same as encoded
+    check_same_tstr(twstr, decoded)
     return tags
         

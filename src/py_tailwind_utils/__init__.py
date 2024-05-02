@@ -101,6 +101,8 @@ from .style_values_noop import LineClamp as lineclamp
 from .style_values_noop import Animation as animation
 from .style_values_noop import BreakInside as breakinside
 
-from .utils import gradient
+from .utils import build_gradient_expr
 from .valuetags import *
+
+from .to_twsty_expr import encode_twstr
 __version__ = "1.1.1"

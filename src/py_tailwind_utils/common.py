@@ -39,15 +39,25 @@ logger.setLevel(logging.DEBUG)
 
 
 class _IDivExpr:
-    def __init__(self, tagstr, elabel, arg2):
+    def __init__(self, tagstr, elabel, arg2, link=None):
+        print("calling _IDivExpr:init : tagstr=", tagstr, " elabel= ", elabel, " arg2 = ", arg2)
         self.tagstr = tagstr
         self.arg2 = arg2
         self.elabel = elabel
+        self.link = link
         self.modifier_chain = []
 
     def __truediv__(self, arg):
-        tt = _IDivExpr(self, self.arg2.elabel, arg)
-        return tt
+        print ("calling _IDivExpr:__truediv__", self.tagstr,
+               " ", self.arg2, " ", arg)
+        tt = self.arg2/arg
+        # tt = _IDivExpr(self,
+        #                self.arg2.elabel,
+        #                arg)
+        self.link = tt
+        return self
+
+
 
     def evaluate(self, val=""):
         if isinstance(self.tagstr, str) and isinstance(self.arg2, _IDivExpr):
@@ -78,7 +88,11 @@ class _IDivExpr:
 
                 if ares[-1] == "-":
                     ares = ares[:-1]
-            return self.tagstr.format(val=ares)
+
+
+            # this can introduce double ; need a more logicial strategy
+            tmp = self.tagstr.format(val=ares)
+            return tmp.replace("--", "-")
 
         if isinstance(self.tagstr, str) and (
             isinstance(self.arg2, int) or isinstance(self.arg2, str) or isinstance(self.arg2, float)
@@ -144,6 +158,7 @@ class TagBase:
 
     @classmethod
     def __truediv__(cls, valprefix):
+        print ("calling TagBase:__truediv__")
         tt = _IDivExpr(cls.tagstr, cls.elabel, valprefix)
         return tt
         # if isinstance(valprefix, TagBase)or isinstance(valprefix, _ColorBase):
@@ -192,14 +207,82 @@ def tstr(*args, prefix=""):
         if isinstance(arg, Enum) or isinstance(arg, aenum.EnumType):
             res += f"{modifier_prefix}{prefix}" + arg.value + " "
         if isinstance(arg, _IDivExpr):
-            res += f"{modifier_prefix}{prefix}" + arg.evaluate() + " "
+            evals = arg.evaluate()
+            if evals[-1] == "-":
+                evals = evals[:-1]
+            res += f"{modifier_prefix}{prefix}" + evals + " "
         if isinstance(arg, TagBase):
             res += f"{modifier_prefix}{prefix}" + arg.tagstr + " "
         if isinstance(arg, str):
             res += f"{prefix}" + arg + " "
-    return res.strip()
 
 
+    res = res.strip()
+
+    return res
+    
+#@pysnooper.snoop()    
+def is_same_class_idivexpr_recurse(aidiv_expr, bidiv_expr):
+    """
+    check if two idiv expr is same
+    """
+    if aidiv_expr.elabel != bidiv_expr.elabel:
+        return False
+    if isinstance(aidiv_expr.arg2,
+                  _IDivExpr) and isinstance(
+                      bidiv_expr.arg2,
+                      _IDivExpr
+                  ):
+        return is_same_class_idivexpr_recurse(aidiv_expr.arg2,
+                                      bidiv_expr.arg2
+                                      )
+            
+    elif type(aidiv_expr.arg2) == type(bidiv_expr.arg2):
+        # we only check for class equivalence
+        # hence W/32 is same as W/64
+        # therefore only type is checked and not the actual value
+        return True
+
+    return False
+
+#@pysnooper.snoop()    
+def is_same_class_idivexpr(aidiv_expr, bidiv_expr):
+    """
+    check if two idiv expr is same
+    """
+    if aidiv_expr.elabel != bidiv_expr.elabel:
+        return False
+    if isinstance(aidiv_expr.arg2,
+                  _IDivExpr) and isinstance(
+                      bidiv_expr.arg2,
+                      _IDivExpr
+                  ):
+        if is_same_class_idivexpr_recurse(aidiv_expr.arg2,
+                                      bidiv_expr.arg2
+                                      ):
+            pass
+        else:
+            return False
+        
+    elif type(aidiv_expr.arg2) == type(bidiv_expr.arg2):
+        # we only check for class equivalence
+        # hence W/32 is same as W/64
+        # therefore only type is checked and not the actual value
+        # the type expression also works for idiv expression
+        # over enum types
+        pass
+    else:
+        return False
+    
+    
+
+
+    # finally compare the modifier chains
+    if aidiv_expr.modifier_chain == bidiv_expr.modifier_chain:
+            return True
+
+    return False
+    
 def remove_from_twtag_list(twsty_taglist, twsty_tag):
     if isinstance(twsty_tag, Enum) or isinstance(twsty_tag, aenum.EnumType):
         twsty_taglist.remove(twsty_tag)
@@ -207,7 +290,7 @@ def remove_from_twtag_list(twsty_taglist, twsty_tag):
 
     remove_idx = None
     for idx, _twtag in enumerate(twsty_taglist):
-        if isinstance(_twtag, Enum) or isinstance(twsty_tag, aenum.EnumType):
+        if isinstance(_twtag, Enum) or isinstance(_twtag, aenum.EnumType):
             continue
         if twsty_tag.elabel == _twtag.elabel:
             if type(twsty_tag.tagstr) == type(_twtag.tagstr):
@@ -238,11 +321,22 @@ def remove_from_twtag_list(twsty_taglist, twsty_tag):
 
     assert remove_idx is not None
     twsty_taglist.pop(remove_idx)
+
+
 def add_to_twtag_list_internal(twsty_taglist, twsty_tag):
     """
     add the twsty_tag to taglist; override existing elabel.
     TODO: bg/green/100, bg/opacity/50
     """
+    # doesn't support conc of style_values Enum type
+    if isinstance(twsty_tag, Enum) or isinstance(
+            twsty_tag, aenum.EnumType
+        ):
+        
+        assert False
+    
+    # ========================== Scenario 1 ==========================
+    # twsty_tag is noop/x where x is a style-value
     if twsty_tag.elabel == "noop":
         override_pos = None
         if isinstance(twsty_tag.arg2, Enum) or isinstance(
@@ -264,36 +358,20 @@ def add_to_twtag_list_internal(twsty_taglist, twsty_tag):
                 twsty_taglist.append(twsty_tag)
                 return
 
+            
     tagclass = twsty_tag.elabel
     override_pos = None
     for idx, _twtag in enumerate(twsty_taglist):
         # Enum types have already been handled
         if isinstance(_twtag, Enum) or isinstance(twsty_tag, aenum.EnumType):
             continue
-        # TODO: currently not handling modifier chain.
-        # need better/first class handling of modifier c
 
-        if twsty_tag.elabel == _twtag.elabel:
-            if isinstance(twsty_tag.tagstr, _IDivExpr) and isinstance(
-                _twtag.tagstr, _IDivExpr
-            ):
-                if twsty_tag.tagstr.elabel == _twtag.tagstr.elabel:
-                    if twsty_tag.modifier_chain == _twtag.modifier_chain:
-                        override_pos = idx
-                else:
-                    continue
-            elif type(twsty_tag.arg2) == type(_twtag.arg2):
-                if twsty_tag.modifier_chain == _twtag.modifier_chain:
-                    override_pos = idx
-                else:
-                    continue
-            # elif type(_twtag) == type(twsty_tag):
+        # now both twsty_tag and _twtag are IDiv expressions
+        if is_same_class_idivexpr(twsty_tag, _twtag):
+            override_pos = idx
+            break
+        
 
-            #     if twsty_tag.modifier_chain == _twtag.modifier_chain:
-            #         override_pos = idx
-            #         assert False
-            #     else:
-            #         continue
 
     if override_pos is not None:
         # Output too verbose
@@ -308,6 +386,17 @@ def add_to_twtag_list_internal(twsty_taglist, twsty_tag):
 
 def conc_twtags(*args):
     res = []
+    orig_twstr = [tstr(_) for _ in args]
+    
     for twsty_tag in args:
         add_to_twtag_list_internal(res, twsty_tag)
+
+    res_twstr = [tstr(_) for _ in res]
+    if len(orig_twstr) == len(res_twstr):
+        pass
+    else:
+        print ("Review conc: orig : == ", orig_twstr)
+        print ("Review conc: final  == ", res_twstr)
+    
+    
     return res

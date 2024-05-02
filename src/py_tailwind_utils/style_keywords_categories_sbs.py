@@ -181,6 +181,8 @@ def on_twValue_select(dbref, msg, to_ms):
     sty_value_attr = getattr(sty_value_class, msg.value)
     return "/tw_styValue_selected", (sty_value_class, sty_value_attr)
 
+def on_twTag_click(dbref, msg, to_ms):
+    assert False
 
 def build_panel(title, tags, values= []):
     """
