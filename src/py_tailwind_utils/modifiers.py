@@ -32,18 +32,17 @@ from .style_tags import noop
 
 
 def modify(*args, modifier: str = ""):
-    lc_args = []
     for arg in args:
         if isinstance(arg, Enum) or isinstance(arg, EnumType):
-            lc_args.append(noop / arg)
-        else:
-            lc_args.append(arg)
-    for arg in lc_args:
-        try:
-            arg.modifier_chain.insert(0, modifier)
-        except:
-            arg.modifier_chain = [modifier]
-    return lc_args
+            # raw <style-values> is not supported
+            # use noop/<style-value>
+            assert False
+            
+    for arg in args:
+        arg.modifier_chain.insert(0, modifier)
+
+    # so that modifiers can be chained
+    return args
 
 
 def selection(*args):

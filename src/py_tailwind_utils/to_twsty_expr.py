@@ -23,24 +23,26 @@ for tagname, tagC in styTagDict.items():
     tag_sm = tagC.__class__.__name__[1:]
     st_map[tagC.stemval] = tagC
 
+# we need new instance for every
+#
+st_map_fused = {}
+st_map_fused["mt"] = lambda: mr/st
+st_map_fused["ml"] = lambda: mr/sl
+st_map_fused["mb"] = lambda: mr/sb
+st_map_fused["mr"] = lambda: mr/sr
+st_map_fused["mx"] = lambda: mr/x
+st_map_fused["my"] = lambda: mr/y
+st_map_fused["me"] = lambda: mr/se
+st_map_fused["ms"] = lambda: mr/ss
 
-st_map["mt"] = mr/st
-st_map["ml"] = mr/sl
-st_map["mb"] = mr/sb
-st_map["mr"] = mr/sr
-st_map["mx"] = mr/x
-st_map["my"] = mr/y
-st_map["me"] = mr/se
-st_map["ms"] = mr/ss
-
-st_map["pt"] = pd/st
-st_map["pl"] = pd/sl
-st_map["pb"] = pd/sb
-st_map["pr"] = pd/sr
-st_map["px"] = pd/x
-st_map["py"] = pd/y
-st_map["pe"] = pd/se
-st_map["ps"] = pd/ss
+st_map_fused["pt"] = lambda: pd/st
+st_map_fused["pl"] = lambda: pd/sl
+st_map_fused["pb"] = lambda: pd/sb
+st_map_fused["pr"] = lambda: pd/sr
+st_map_fused["px"] = lambda: pd/x
+st_map_fused["py"] = lambda: pd/y
+st_map_fused["pe"] = lambda: pd/se
+st_map_fused["ps"] = lambda: pd/ss
 
 #st_map["m"] = mr
 
@@ -49,7 +51,7 @@ def color_value_decoder(tag, terminal=True):
     try:
         value = int(tag)
         if value != 50:
-            cv = int(value/100)
+            cv = int(value) #int(value/100)
             return cv
         else:
             return "50"
@@ -64,10 +66,13 @@ def encode_tag(tag, terminal=False):
         if tag == "px":
             return twpx, None
         
-    if tag in st_map:
-        return st_map[tag], None
+    if tag in st_map_fused:
+        return st_map_fused[tag](), None
+
+    elif tag in st_map:
+            return st_map[tag], None
     if tag in ["auto", "px", "t", "b", "l", "r", "s", "e"]:
-        return st_map[tag], None
+        return st_map[tag](), None
 
     if tag in _tw_color_list:
         return get_color_instance(tag), color_value_decoder
@@ -111,12 +116,12 @@ def encode_style_tag(the_meat, all_modifiers):
     meat_parts = the_meat.split("-")
     restag = None
     if len(meat_parts) == 1:
-        assert meat_parts[0] in st_map
+        assert meat_parts[0] in st_map or meat_parts[0] in st_map_fused
         restag, value_decoder = encode_tag(meat_parts[0])
         pass
 
     if len(meat_parts) == 2:
-        assert meat_parts[0] in st_map
+        assert meat_parts[0] in st_map or meat_parts[0] in st_map_fused
         p0, value_decoder = encode_tag(meat_parts[0])
         if value_decoder:
             p1 = value_decoder(meat_parts[1], terminal=True)
@@ -125,7 +130,7 @@ def encode_style_tag(the_meat, all_modifiers):
         restag = p0/p1
     
     if len(meat_parts) == 3:
-        assert meat_parts[0] in st_map
+        assert meat_parts[0] in st_map or meat_parts[0] in st_map_fused
         p0, value_decoder = encode_tag(meat_parts[0])
         assert value_decoder == None
         p1, value_decoder = encode_tag(meat_parts[1])
@@ -232,9 +237,10 @@ def encode_twstr(twstr):
             if res:
                 tags.append(res)
 
-        
+
     decoded = tstr(*tags)
     # make sure the decoded is same as encoded
     check_same_tstr(twstr, decoded)
+
     return tags
         

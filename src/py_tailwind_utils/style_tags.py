@@ -135,15 +135,12 @@ _tw_keywords = [
     "peer",
     "contain",
     "reverse",
-    "spacing"
+    "spacing",
     "sm",
     "md",
     "lg",
     "xl",
     "xl2"
-    
-
-    
 ]
 
 for kw in _tw_keywords:
@@ -211,7 +208,7 @@ for kw in _tw_keywords_val:
 
 
 class _end(TagBase):
-    tagstr = "end{val}"
+    tagstr = "end-{val}"
     tagops = []
     taghelp = "end"
     elabel = "end"
@@ -278,6 +275,7 @@ lh = _lh()
 
 class _mr(TagBase):
     tagstr = "m{val}"
+    tagstr_s = "m-{val}"
     tagops = {}
     taghelp = "margin"
     elabel = "mr"
@@ -300,6 +298,7 @@ mr = _mr()
 
 class _pd(TagBase):
     tagstr = "p{val}"
+    tagstr_s = "p-{val}"
     tagops = {}
     taghelp = "padding"
     elabel = "pd"

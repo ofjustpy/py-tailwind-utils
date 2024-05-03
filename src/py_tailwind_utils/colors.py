@@ -40,19 +40,19 @@ class _ColorBase:
 
     @classmethod
     def evaluate(cls, colorval: str):
-        # print ("calling color evaluate")
-        # print ("color val = ", colorval)
-        # for black and white color
-        # we use black/0. this is done to maintain
-        # consistency
-
+        if colorval == None:
+            return cls.mycolor
+        
         if colorval == "":
             return cls.mycolor
         
         if colorval == "0":
             return cls.mycolor
-        if len(colorval) == 1 and colorval[-1] != "0":
-            return f"{cls.mycolor}-{colorval}00"
+        # we are nolonger auto filling color val from 5 to 500
+        # if len(colorval) == 1 and colorval[-1] != "0":
+        #     # letting go of the idea of using short form
+        #     assert False
+        #     #return f"{cls.mycolor}-{colorval}00"
         else:
             return f"{cls.mycolor}-{colorval}"
         pass
