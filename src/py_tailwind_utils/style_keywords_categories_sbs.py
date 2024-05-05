@@ -193,7 +193,7 @@ def build_panel(title, tags, values= []):
         oj.AD.Button(key = tagC.__class__.__name__[1:],
                      childs = [oj.PC.Span(text=tagC.taghelp, twsty_tags=[fz.sm, fw.medium, pd/x/2, pd/y/3])],
                      value = tagC.elabel,
-                     twsty_tags = [boxtopo.bd, bdr.lg, bd/slate/7, bg/slate/2],
+                     twsty_tags = [boxtopo.bd, bdr.lg, bd/slate/700, bg/slate/200],
                      on_click = on_twTag_click
                      )     for tagC in tags]
     
@@ -210,7 +210,7 @@ def build_panel(title, tags, values= []):
                                          for _ in enum_class
                                          ],
                                on_change= on_twValue_select,
-                               twsty_tags=[boxtopo.bd, bdr.lg, bd/slate/7, bg/slate/2, pd/x/3, pd/y/2]
+                               twsty_tags=[boxtopo.bd, bdr.lg, bd/slate/700, bg/slate/200, pd/x/3, pd/y/2]
                                )
         
         value_boxes.append(comp_box)
@@ -218,7 +218,7 @@ def build_panel(title, tags, values= []):
     
     return oj.PC.Subsubsection(title,
                                oj.PC.StackG(num_cols=1, twsty_tags=[gap/x/12, gap/y/3, *variant(G/cols/2, rv="xl")],  childs=[*tag_btns, *value_boxes]),
-                               twsty_tags=[shadow.md, shadow/slate/2, pd/2, boxtopo.bd, bd/slate/1]
+                               twsty_tags=[shadow.md, shadow/slate/200, pd/2, boxtopo.bd, bd/slate/100]
                                
                                )
 

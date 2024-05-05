@@ -156,14 +156,14 @@ def test_mrpd_utility(tw_mrpd):
 
 def test_conc_twtags():
     mytags = [
-        bg / green / 1,
-        bg / blue / 1,
-        fc / blue / 1,
-        fc / gray / 1,
+        bg / green / 100,
+        bg / blue / 100,
+        fc / blue / 100,
+        fc / gray / 100,
         flx.row,
         flx.rrow,
     ]
-    assert tstr(*conc_twtags(*mytags)) == tstr(bg / blue / 1, fc / gray / 1, flx.rrow)
+    assert tstr(*conc_twtags(*mytags)) == tstr(bg / blue / 100, fc / gray / 100, flx.rrow)
 
 
 def test_conc_twtags_same_tagtype():
@@ -204,7 +204,7 @@ def test_outline_boxshadow_tags_and_values():
         outline / gray / 50,
         shadow._,
         shadow.md,
-        shadow / green / 1,
+        shadow / green / 100,
     ]
     assert (
         tstr(*twtags)
@@ -213,9 +213,9 @@ def test_outline_boxshadow_tags_and_values():
 
 
 def test_remove_from_twtag_list():
-    mytags = [bg / blue / 1, bg / green / 1, fc / blue / 1, flx.rrow, jc.start]
+    mytags = [bg / blue / 100, bg / green / 100, fc / blue / 100, flx.rrow, jc.start]
     remove_from_twtag_list(mytags, jc.start)
-    remove_from_twtag_list(mytags, bg / green / 1)
+    remove_from_twtag_list(mytags, bg / green / 100)
     assert tstr(*mytags) == "bg-blue-100 text-blue-100 flex-row-reverse"
 
 
@@ -226,8 +226,8 @@ def test_remove_absent_item_scenario1():
     Expection is raised after partial match
     """
     # with pytest.raises(KeyError) as excinfo:
-    mytags = [bg / blue / 1, bg / green / 1, fc / blue / 1, flx.rrow, jc.start]
-    remove_from_twtag_list(mytags, bg / pink / 1)
+    mytags = [bg / blue / 100, bg / green / 100, fc / blue / 100, flx.rrow, jc.start]
+    remove_from_twtag_list(mytags, bg / pink / 100)
     # removal of non-present item doesn't raise KeyError
     # assert "pink" in str(excinfo.value)
     assert True

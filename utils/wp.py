@@ -73,7 +73,7 @@ def build_components(session_manager):
             """
             tagC: tailwind tag class defined in style_tags
             """
-            return oj.StackW_(tagC.__class__.__name__[1:], cgens=[oj.Span_("description", text=tagC.taghelp+":", pcp=[twt.bg/twt.slate/1]), oj.Span_("Notation", text=tagC.elabel, pcp=[twt.fw.bold])])
+            return oj.StackW_(tagC.__class__.__name__[1:], cgens=[oj.Span_("description", text=tagC.taghelp+":", twsty_tags=[twt.bg/twt.slate/1]), oj.Span_("Notation", text=tagC.elabel, twsty_tags=[twt.fw.bold])])
         cgens = map(lambda kv: hc_twtag_info(kv[1]), st.styTagDict.items())
         tagcontent_ = oj.StackG_("content", cgens=cgens, num_cols=5)
         panel_ = oj.Subsection_(
@@ -89,10 +89,10 @@ def wp_twtags_ref(request):
         build_components(session_manager)
         oj.Container_("tlc",
                           cgens = [stubStore.twreference.styValuesPanel,
-                                   oj.Divider_("sep", pcp=[twt.mr/twt.st/8, twt.mr/twt.sb/8]),
+                                   oj.Divider_("sep", twsty_tags=[twt.mr/twt.st/8, twt.mr/twt.sb/8]),
                                    stubStore.twreference.tagRefPanel
                                    ],
-                          pcp=[twt.H/"screen", twt.bg/twt.gray/"100/20"])
+                          twsty_tags=[twt.H/"screen", twt.bg/twt.gray/"100/20"])
         wp = oj.WebPage_("Reference to tw tags and values",
                          cgens= [stubStore.tlc],
                          template_file='svelte.html',
