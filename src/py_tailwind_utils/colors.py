@@ -35,7 +35,6 @@ class _ColorBase:
     
     @classmethod
     def __truediv__(cls, colorval: str):
-        print ("calling color div")
         return cls.evaluate(str(colorval))
 
     @classmethod

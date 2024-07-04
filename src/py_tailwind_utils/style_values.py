@@ -406,7 +406,7 @@ class DivideStyle(Enum):
     
 class OutlineStyle(Enum):
     none = "outline-none"
-    _ = "outline"
+    #_ = "outline"
     dashed = "outline-dashed"
     dotted = "outline-dotted"
     double = "outline-double"
@@ -469,6 +469,7 @@ class BreakInside(Enum):
 class BoxTopo(Enum):
     bd = "border"
     ring = "ring"
+    outline = "outline"
     # container = "container"
     pass
 

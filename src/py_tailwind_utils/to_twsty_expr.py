@@ -88,7 +88,6 @@ def encode_tag(tag, terminal=False):
     except:
         pass
 
-    print ("DEBUG-LOG ; assuming tag is string = ", tag)
     return tag, None
 
 

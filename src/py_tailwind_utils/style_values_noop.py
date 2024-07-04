@@ -1075,9 +1075,9 @@ class _OutlineStyle:
     def none(cls):
         return noop / sv.OutlineStyle.none
 
-    @property
-    def _(cls):
-        return noop / sv.OutlineStyle._
+    # @property
+    # def _(cls):
+    #     return noop / sv.OutlineStyle._
 
     @property
     def dashed(cls):
@@ -1167,6 +1167,10 @@ class _BoxTopo:
     @property
     def ring(cls):
         return noop / sv.BoxTopo.ring
+
+    @property
+    def outline(cls):
+        return noop / sv.BoxTopo.outline
     
 #     @property
 #     def container(cls):
