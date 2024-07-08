@@ -254,7 +254,22 @@ dockbar = Dockbar ([almost_universal_panel,
                     "Flexbox",
                     "Sizing and Spacing",
                     "Grid and Tables"
-                    ]
+                    ],
+                   undock_btn_sty = [
+                       bdr.md,
+                       boxtopo.bd,
+                       
+                       *variant(
+                           bg / gray / 400,
+                           fc / slate / 500,
+                           bd / slate / 200,
+                           boxtopo.bd,
+                           bd/2,
+                           bdr.md,
+                           shadow.none,
+                           rv="disabled",
+                       )
+                       ]
                    )
 
                    
