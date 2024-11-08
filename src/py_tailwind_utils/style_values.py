@@ -116,13 +116,14 @@ class ClearWrap(Enum):
 
 # TBD: docs/overscroll-behaviour
 class ObjectFit(Enum):
-    cn = "object-contain"
-    cv = "object-cover"
-    f = "object-fill"
-    n = "object-none"
-    sd = "object-scale-down"
+    cn = "object-contain"      # Scale to fit within container, preserving aspect ratio.
+    cv = "object-cover"        # Fill container while preserving aspect ratio; may crop.
+    f = "object-fill"          # Stretch to fill container, ignoring aspect ratio.
+    n = "object-none"          # Keep original size, may overflow or leave space.
+    sd = "object-scale-down"   # Scale down if larger than container, preserve aspect ratio.
 
 
+    
 # TODO: top, bottom permutation combination missing
 
 
@@ -137,19 +138,24 @@ class ObjectPosition(Enum):
     t = "object-top"
 
 
-class Visibility(Enum):
-    v = "visible"
-    nv = "invisible"
+# class Visibility(Enum):
+#     v = "visible"
+#     nv = "invisible"
 
-
-class FlexLayout(Enum):
+class FlexDirection(Enum):
     row = "flex-row"
     rrow = "flex-row-reverse"
     col = "flex-col"
     rcol = "flex-col-reverse"
-    wrap = "flex-wrap"
-    rwrap = "flex-wrap-reverse"
-    nowrap = "flex-nowrap"
+    
+
+class FlexWrap(Enum):
+    w = "flex-wrap"
+    rw = "flex-wrap-reverse"
+    nw = "flex-nowrap"
+    
+class FlexResize(Enum):
+    
     one = "flex-1"
     auto = "flex-auto"
     initial = "flex-initial"
@@ -167,7 +173,8 @@ class JustifyContent(Enum):
     between = "justify-between"
     evenly = "justify-evenly"
     around = "justify-around"
-
+    stretch = "justify-stretch"
+    normal = "justify-normal"
 
 class JustifyItems(Enum):
     start = "justify-items-start"
@@ -198,7 +205,9 @@ class AlignContent(Enum):
     between = "content-between"
     evenly = "content-evenly"
     around = "content-around"
-
+    normal = "content-normal"
+    baseline = "content-baseline"
+    stretch = "content-stretch"
 
 class AlignItems(Enum):
     start = "items-start"
@@ -308,12 +317,16 @@ class LineHeight(Enum):
     loose = "leading-loose"
 
 
-class ListItems(Enum):
+class ListStylePosition(Enum):
+    i = "list-inside"
+    o = "list-outside"
+
+
+
+class ListStyleType(Enum):
     none = "list-none"
     disc = "list-disc"
     decimal = "list-decimal"
-    inside = "list-inside"
-    outside = "list-outside"
 
 
 class TextAlign(Enum):
@@ -339,12 +352,39 @@ class TextWrap(Enum):
     nowrap = "text-nowrap"
     balance = "text-balance"
     pretty = "text-pretty"
+
+
+class TextDecoration(Enum):
+    underline = "underline"
+    overline = "overline"
+    linethrough = "line-through"
+    nounderline = "no-underline"
+
+
+class TextOverflow(Enum):
+    truncate = "truncate"
+    ellipsis = "text-ellipsis"
+    clip = "text-clip"
+
     
+        
+class DecorationStyle(Enum):
+    solid = "decoration-solid"
+    dashed = "decoration-dashed"
+    dotted = "decoration-dotted"
+    double = "decoration-double"
+    wavy = "decoration-wavy"
     
 class VerticalAlign(Enum):
+    baseline = "align-baseline"
+    
     top = "align-top"
     middle = "align-middle"
     bottom = "align-bottom"
+    texttop = "align-text-top"
+    textbottom = "align-text-bottom"
+    alignsub = "align-sub"
+    alignsuper = "align-super"
     # few others left out
 
     pass
@@ -482,7 +522,11 @@ class PlacementPosition(Enum):
     sticky = "sticky"
     pass
 
-
+class LayoutVisibility(Enum):
+    v = "visible"
+    iv = "invisible"
+    c = "collapse"
+    
 class BoxSizing(Enum):
     b = "box-border"
     c = "box-content"
@@ -514,7 +558,13 @@ class Whitespace(Enum):
     pre_line = "whitespace-pre-line"
     pre_wrap = "whitespace-pre-wrap"
     break_spaces = "whitespace-break-spaces"
-    
+
+class WordBreak(Enum):
+    normal = "break-normal"
+    words = 	"break-words" 
+    all = "break-all"
+    keep = "break-keep"
+
 class GridAuto(Enum):
     cauto = "grid-cols-auto"
     cmin = "grid-cols-min"
@@ -559,8 +609,18 @@ class OverflowY(Enum):
     visible = "overflow-y-visible"
     scroll = "overflow-y-scroll"        
 
-    
+class OverscrollBehaviour(Enum):
+    auto = "overscroll-auto"
+    contain = "overscroll-contain"
+    none = "overscroll-none"
+    y_auto = "overscroll-y-auto"
+    y_contain = "overscroll-y-contain"
+    y_none = "overscroll-y-none"
+    x_auto = "overscroll-x-auto"
+    x_contain = "overscroll-x-contain"
+    x_none = "overscroll-x-none"
 
+    
 class PointerEvents(Enum):
     none = "pointer-events-none"
     auto = "pointer-events-auto"

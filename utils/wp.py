@@ -48,7 +48,7 @@ map_twname= {
 def build_components(session_manager):
     with session_manager.uictx("twreference") as _twreferencectx:
         _ictx = _twreferencectx
-        def handle_twSty_select(dbref, msg):
+        async def handle_twSty_select(dbref, msg):
             ecls = sv.styValueDict[dbref.stub.key]  # enum class
             selected_attr = getattr(ecls, dbref.value)
             print("handle_twSty_select: ", ecls, " ", selected_attr)

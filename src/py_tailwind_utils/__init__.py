@@ -57,7 +57,9 @@ from .style_values_noop import BoxSizing as boxsz
 from .style_values_noop import BoxTopo as boxtopo
 from .style_values_noop import ClearWrap as cw
 from .style_values_noop import DisplayBox as db
-from .style_values_noop import FlexLayout as flx
+from .style_values_noop import FlexResize as flxrsz
+from .style_values_noop import FlexDirection as flxdir
+from .style_values_noop import FlexWrap as flxw
 from .style_values_noop import FontFamily as ff
 from .style_values_noop import FontSize as fz
 from .style_values_noop import FontSmoothing as fm
@@ -71,21 +73,27 @@ from .style_values_noop import JustifySelf as js
 from .style_values_noop import AlignSelf as twas
 from .style_values_noop import LetterSpace as ls
 from .style_values_noop import LineHeight as lh
-from .style_values_noop import ListItems as li
+from .style_values_noop import ListStylePosition as lsp
+from .style_values_noop import ListStyleType as lst
 from .style_values_noop import ObjectFit as of
 from .style_values_noop import ObjectPosition as op
 from .style_values_noop import OutlineStyle as outlinesty
 from .style_values_noop import PlaceContent as pc
 from .style_values_noop import PlaceItems as pi
 from .style_values_noop import PlacementPosition as ppos
+from .style_values_noop import LayoutVisibility as lv
 from .style_values_noop import PlaceSelf as ps
 from .style_values_noop import Prose as prose
 from .style_values_noop import Table as tbl
 from .style_values_noop import TextAlign as ta
 from .style_values_noop import TextTransform as tt
-from .style_values_noop import TextWrap as textwrap
-from .style_values_noop import VerticalAlign as va
-from .style_values_noop import Visibility as visibility
+from .style_values_noop import TextWrap as tw 
+from .style_values_noop import TextOverflow as to # clash with gradient to
+from .style_values_noop import VerticalAlign as verticalalign
+from .style_values_noop import TextDecoration as textdecoration
+from .style_values_noop import DecorationStyle as decorationstyle
+
+# from .style_values_noop import Visibility as visibility
 from .style_values_noop import WrapAround as wa
 from .style_values_noop import Transition as transition
 from .style_values_noop import ScreenReaders as srs
@@ -93,6 +101,7 @@ from .style_values_noop import Whitespace as whitespace
 from .style_values_noop import Overflow as overflow
 from .style_values_noop import OverflowX as overflowx
 from .style_values_noop import OverflowY as overflowy
+from .style_values_noop import OverscrollBehaviour as overscrollbehaviour
 from .style_values_noop import PointerEvents as pointerevents
 from .style_values_noop import AspectRatio as aspectratio
 from .style_values_noop import Cursor as cursor

@@ -13,6 +13,7 @@ class _boxshadow(TagBase):
 boxshadow = _boxshadow()
 
 
+
 # support bd/None to simply output borderTo
 class _bd(TagBase):
     tagstr = "border-{val}"
@@ -35,37 +36,37 @@ class _priority(TagBase):
 priority = _priority()
 
 
-class _from(TagBase):
+class _gfrom(TagBase):
     tagstr = "from-{val}"
     tagops = []
     taghelp = "gradient from color"
     elabel = "from"
-    stemval = "from"
+    stemval = "gfrom_"
 
 
-from_ = _from()
+gfrom_ = _gfrom()
 
 
-class _to(TagBase):
+class _gto(TagBase):
     tagstr = "to-{val}"
     tagops = []
     taghelp = "gradient to color"
     elabel = "to"
-    stemval = "to"
+    stemval = "gto_"
 
 
-to_ = _to()
+gto_ = _gto()
 
 
-class _via(TagBase):
+class _gvia(TagBase):
     tagstr = "via-{val}"
     tagops = []
     taghelp = "gradient via color"
-    elabel = "via"
-    stemval = "via"
+    elabel = "gvia"
+    stemval = "gvia_"
 
 
-via_ = _via()
+gvia_ = _gvia()
 
 
 class _twmax(TagBase):
@@ -99,6 +100,12 @@ class _twpx(TagBase):
 
 twpx = _twpx()
 
+class xl2(TagBase):
+    tagstr = "2xl"
+    tagops = []
+    taghelp = "2xl"
+    elabel = "xl2"
+    stemval = "2xl"
 
 class _cc(TagBase):
     tagstr = ""
@@ -124,13 +131,9 @@ _tw_keywords = [
     "scroll",
     "span",
     "text",
-    "visible",
     "auto",
     "group",
     "double",
-
-    "invisible",
-    "absolute",
     "grow",
     "peer",
     "contain",
@@ -140,7 +143,7 @@ _tw_keywords = [
     "md",
     "lg",
     "xl",
-    "xl2"
+    "fit"
 ]
 
 for kw in _tw_keywords:
@@ -174,7 +177,6 @@ _tw_keywords_val = [
     "stroke",
     "gap",
     "outline",
-    "underline",
     "divide",
     "rotate",
     "shrink",
@@ -190,6 +192,8 @@ _tw_keywords_val = [
     "indent",
     "screen",
     "clip",
+    "decoration",
+    "underline"
 ]
 for kw in _tw_keywords_val:
     globals()[f"_{kw}"] = type(

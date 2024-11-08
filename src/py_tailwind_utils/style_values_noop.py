@@ -245,7 +245,7 @@ class _ClearWrap:
 
 ClearWrap = _ClearWrap()
 
-
+        
 class _ObjectFit:
     _sv_class = sv.ObjectFit
 
@@ -312,86 +312,95 @@ class _ObjectPosition:
 ObjectPosition = _ObjectPosition()
 
 
-class _Visibility:
-    _sv_class = sv.Visibility
+# class _Visibility:
+#     _sv_class = sv.Visibility
 
-    @property
-    def v(cls):
-        return noop / sv.Visibility.v
+#     @property
+#     def v(cls):
+#         return noop / sv.Visibility.v
 
-    @property
-    def nv(cls):
-        return noop / sv.Visibility.nv
-
-
-Visibility = _Visibility()
+#     @property
+#     def nv(cls):
+#         return noop / sv.Visibility.nv
 
 
-class _FlexLayout:
-    _sv_class = sv.FlexLayout
+# Visibility = _Visibility()
+
+class _FlexDirection:
+    _sv_class = sv.FlexDirection
 
     @property
     def row(cls):
-        return noop / sv.FlexLayout.row
+        return noop / sv.FlexDirection.row
 
     @property
     def rrow(cls):
-        return noop / sv.FlexLayout.rrow
+        return noop / sv.FlexDirection.rrow
 
     @property
     def col(cls):
-        return noop / sv.FlexLayout.col
+        return noop / sv.FlexDirection.col
 
     @property
     def rcol(cls):
-        return noop / sv.FlexLayout.rcol
+        return noop / sv.FlexDirection.rcol
+
+FlexDirection = _FlexDirection()    
+
+class _FlexWrap:
+    _sv_class = sv.FlexWrap
 
     @property
-    def wrap(cls):
-        return noop / sv.FlexLayout.wrap
+    def w(cls):
+        return noop / sv.FlexWrap.w
 
     @property
-    def rwrap(cls):
-        return noop / sv.FlexLayout.rwrap
+    def rw(cls):
+        return noop / sv.FlexWrap.rw
 
     @property
-    def nowrap(cls):
-        return noop / sv.FlexLayout.nowrap
+    def nw(cls):
+        return noop / sv.FlexWrap.nw
+
+FlexWrap = _FlexWrap()
+
+class _FlexResize:
+    _sv_class = sv.FlexResize
 
     @property
     def one(cls):
-        return noop / sv.FlexLayout.one
+        return noop / sv.FlexResize.one
 
     @property
     def auto(cls):
-        return noop / sv.FlexLayout.auto
+        return noop / sv.FlexResize.auto
 
     @property
     def initial(cls):
-        return noop / sv.FlexLayout.initial
+        return noop / sv.FlexResize.initial
 
     @property
     def none(cls):
-        return noop / sv.FlexLayout.none
+        return noop / sv.FlexResize.none
 
     @property
     def grow(cls):
-        return noop / sv.FlexLayout.grow
+        return noop / sv.FlexResize.grow
 
     @property
     def nogrow(cls):
-        return noop / sv.FlexLayout.nogrow
+        return noop / sv.FlexResize.nogrow
 
     @property
     def shrink(cls):
-        return noop / sv.FlexLayout.shrink
+        return noop / sv.FlexResize.shrink
 
     @property
     def noshrink(cls):
-        return noop / sv.FlexLayout.noshrink
+        return noop / sv.FlexResize.noshrink
 
 
-FlexLayout = _FlexLayout()
+FlexResize = _FlexResize()
 
 
 class _JustifyContent:
@@ -421,6 +430,16 @@ class _JustifyContent:
     def around(cls):
         return noop / sv.JustifyContent.around
 
+
+    @property
+    def stretch(cls):
+        return noop / sv.JustifyContent.stretch
+
+
+    @property
+    def normal(cls):
+        return noop / sv.JustifyContent.normal
+    
 
 JustifyContent = _JustifyContent()
 
@@ -502,6 +521,20 @@ class _AlignContent:
     def around(cls):
         return noop / sv.AlignContent.around
 
+    @property
+    def normal(cls):
+        return noop/sv.AlignContent.normal
+    
+    @property
+    def baseline(cls):
+        return noop/sv.AlignContent.baseline
+
+    @property
+    def stretch(cls):
+        return noop/sv.AlignContent.stretch
+
+    
+    
 
 AlignContent = _AlignContent()
 
@@ -819,31 +852,38 @@ class _LineHeight:
 LineHeight = _LineHeight()
 
 
-class _ListItems:
-    _sv_class = sv.ListItems
+class _ListStyleType:
+    _sv_class = sv.ListStyleType
 
     @property
     def none(cls):
-        return noop / sv.ListItems.none
+        return noop / sv.ListStyleType.none
 
     @property
     def disc(cls):
-        return noop / sv.ListItems.disc
+        return noop / sv.ListStyleType.disc
 
     @property
     def decimal(cls):
-        return noop / sv.ListItems.decimal
+        return noop / sv.ListStyleType.decimal
+
+ListStyleType = _ListStyleType()
+
+    
+class _ListStylePosition:
+    _sv_class = sv.ListStylePosition
+    
+    @property
+    def i(cls):
+        return noop / sv.ListStylePosition.i
 
     @property
-    def inside(cls):
-        return noop / sv.ListItems.inside
-
-    @property
-    def outside(cls):
-        return noop / sv.ListItems.outside
+    def o(cls):
+        return noop / sv.ListStylePosition.o
 
 
-ListItems = _ListItems()
+ListStylePosition = _ListStylePosition()
+
 
 
 class _TextAlign:
@@ -923,9 +963,106 @@ class _TextWrap:
 
 TextWrap = _TextWrap()
 
+class _TextDecoration:
+    _sv_class = sv.TextDecoration
+
+    @property
+    def underline(cls):
+        return noop/sv.TextDecoration.underline
+
+    @property
+    def overline(cls):
+        return noop/sv.TextDecoration.overline
+
+    @property
+    def linethrough(cls):
+        return noop/sv.TextDecoration.linethrough
+
+    @property
+    def nounderline(cls):
+        return noop/sv.TextDecoration.nounderline
+
+TextDecoration = _TextDecoration()    
+
+class _TextOverflow:
+    _sv_class = sv.TextOverflow
+
+    @property
+    def truncate(cls):
+        return noop/sv.TextOverflow.truncate
+
+
+    @property
+    def ellipsis(cls):
+        return noop/sv.TextOverflow.ellipsis
+
+
+    @property
+    def clip(cls):
+        return noop/sv.TextOverflow.clip
+
+
+TextOverflow = _TextOverflow()
+
+        
+    
+class _DecorationStyle:
+    _sv_class = sv.DecorationStyle
+
+    @property
+    def solid(cls):
+        return noop / sv.DecorationStyle.solid
+
+    @property
+    def dashed(cls):
+        return noop / sv.DecorationStyle.dashed
+
+    @property
+    def dotted(cls):
+        return noop / sv.DecorationStyle.dotted
+
+    @property
+    def double(cls):
+        return noop / sv.DecorationStyle.double
+
+    @property
+    def wavy(cls):
+        return noop / sv.DecorationStyle.wavy
+
+
+
+DecorationStyle = _DecorationStyle()
+
+
+
+    
 class _VerticalAlign:
     _sv_class = sv.VerticalAlign
 
+    @property
+    def baseline(cls):
+        return noop / sv.VerticalAlign.baseline
+
+    @property
+    def texttop(cls):
+        return noop / sv.VerticalAlign.texttop
+    
+
+    @property
+    def textbottom(cls):
+        return noop / sv.VerticalAlign.textbottom
+
+    @property
+    def alignsub(cls):
+        return noop / sv.VerticalAlign.alignsub
+
+
+    @property
+    def alignsuper(cls):
+        return noop / sv.VerticalAlign.alignsuper
+        
+    
+    
     @property
     def top(cls):
         return noop / sv.VerticalAlign.top
@@ -1206,7 +1343,25 @@ class _PlacementPosition:
 
 PlacementPosition = _PlacementPosition()
 
+class _LayoutVisibility:
+    _sv_class = sv.LayoutVisibility
+    @property
+    def v(cls):
+        return noop/sv.LayoutVisibility.v
 
+    
+    @property
+    def iv(cls):
+        return noop/sv.LayoutVisibility.iv
+
+    @property
+    def c(cls):
+        return noop/sv.LayoutVisibility.c
+
+
+LayoutVisibility = _LayoutVisibility()
+
+    
 class _BoxSizing:
     _sv_class = sv.BoxSizing
 
@@ -1382,6 +1537,47 @@ class _OverflowY:
         return noop / cls._sv_class.scroll
 
 OverflowY = _OverflowY()
+
+class _OverscrollBehaviour:
+    _sv_class = sv.OverscrollBehaviour
+
+    @property
+    def auto(cls):
+        return noop/sv.OverscrollBehaviour.auto
+
+    @property
+    def contain(cls):
+        return noop/sv.OverscrollBehaviour.contain
+
+    @property
+    def none(cls):
+        return noop/sv.OverscrollBehaviour.none
+
+    @property
+    def y_auto(cls):
+        return noop/sv.OverscrollBehaviour.y_auto
+
+    @property
+    def y_contain(cls):
+        return noop/sv.OverscrollBehaviour.y_contain
+
+    @property
+    def y_none(cls):
+        return noop/sv.OverscrollBehaviour.y_none
+
+    @property
+    def x_auto(cls):
+        return noop/sv.OverscrollBehaviour.x_auto
+
+    @property
+    def x_contain(cls):
+        return noop/sv.OverscrollBehaviour.x_contain
+
+    @property
+    def x_none(cls):
+        return noop/sv.OverscrollBehaviour.x_none
+
+OverscrollBehaviour = _OverscrollBehaviour()
 
 
     

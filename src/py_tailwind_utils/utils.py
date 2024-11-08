@@ -43,13 +43,13 @@ def build_gradient_expr(from_color_idvexpr,
     """
     vias = []
     if args:
-        vias = [via_/_ for _ in args]
+        vias = [gvia_/_ for _ in args]
         
     return [
         bg / "gradient-to-t",
-        from_ / from_color_idvexpr,
-        to_ / to_color_idivexpr,
-        via_ / via_color_idivexpr,
+        gfrom_ / from_color_idvexpr,
+        gto_ / to_color_idivexpr,
+        gvia_ / via_color_idivexpr,
         *vias
     ]
 
