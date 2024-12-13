@@ -26,48 +26,49 @@ import json
 import os
 
 from addict_tracking_changes import Dict
+from .common import _IDivExpr, _ColorBase
 
-
-class _ColorBase:
-    mycolor = None
-    elabel = "color"
-    tagstr = None
+# class _ColorBase:
+#     mycolor = None
+#     elabel = "color"
+#     tagstr = None
     
-    @classmethod
-    def __truediv__(cls, colorval: str):
-        return cls.evaluate(str(colorval))
+#     @classmethod
+#     def __truediv__(cls, colorval: str):
+#         #return _IDivExpr(cls, colorval)
+#         return cls.evaluate(str(colorval))
 
-    @classmethod
-    def evaluate(cls, colorval: str):
-        if colorval == None:
-            return cls.mycolor
+#     @classmethod
+#     def evaluate(cls, colorval: str):
+#         if colorval == None:
+#             return cls.mycolor
         
-        if colorval == "":
-            return cls.mycolor
+#         if colorval == "":
+#             return cls.mycolor
         
-        if colorval == "0":
-            return cls.mycolor
-        # we are nolonger auto filling color val from 5 to 500
-        # if len(colorval) == 1 and colorval[-1] != "0":
-        #     # letting go of the idea of using short form
-        #     assert False
-        #     #return f"{cls.mycolor}-{colorval}00"
-        else:
-            return f"{cls.mycolor}-{colorval}"
-        pass
+#         if colorval == "0":
+#             return cls.mycolor
+#         # we are nolonger auto filling color val from 5 to 500
+#         # if len(colorval) == 1 and colorval[-1] != "0":
+#         #     # letting go of the idea of using short form
+#         #     assert False
+#         #     #return f"{cls.mycolor}-{colorval}00"
+#         else:
+#             return f"{cls.mycolor}-{colorval}"
+#         pass
 
-    @classmethod
-    def keyvaleval(cls, colorval: str):
-        return cls.evaluate(colorval)
+#     @classmethod
+#     def keyvaleval(cls, colorval: str):
+#         return cls.evaluate(colorval)
 
-    # @ classmethod
-    # def __pow__(cls, colorval):
-    #     print("In __pw")
-    #     return f"{cls.mycolor}-{colorval}00"
+#     # @ classmethod
+#     # def __pow__(cls, colorval):
+#     #     print("In __pw")
+#     #     return f"{cls.mycolor}-{colorval}00"
 
-    @classmethod
-    def __repr__(cls):
-        return f"{cls.mycolor}"
+#     @classmethod
+#     def __repr__(cls):
+#         return f"{cls.mycolor}"
 
 
 slate = (
@@ -95,39 +96,6 @@ slate = (
 ) = teal = cyan = sky = blue = indigo = violet = purple = fuchsia = pink = rose = None
 
 
-_tw_color_list = [
-    "slate",
-    "gray",
-    "zinc",
-    "neutral",
-    "stone",
-    "red",
-    "orange",
-    "amber",
-    "yellow",
-    "lime",
-    "green",
-    "emerald",
-    "teal",
-    "cyan",
-    "sky",
-    "blue",
-    "indigo",
-    "violet",
-    "purple",
-    "fuchsia",
-    "pink",
-    "rose",
-    "black",
-    "white",
-]
-
-for color in _tw_color_list:
-    globals()[color.capitalize()] = type(
-        color.capitalize(), (_ColorBase,), {"mycolor": color, "tagstr": f"{color}-{{val}}"}
-    )
-
-    globals()[color] = globals()[color.capitalize()]()
 
 
 onetonine = ["_", "i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix"]
@@ -152,6 +120,3 @@ def color2hex(twcc):
     raise ValueError
 
 
-def get_color_instance(colorname):
-    assert colorname in _tw_color_list
-    return globals()[colorname]

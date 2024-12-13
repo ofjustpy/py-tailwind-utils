@@ -40,8 +40,8 @@ class _gfrom(TagBase):
     tagstr = "from-{val}"
     tagops = []
     taghelp = "gradient from color"
-    elabel = "from"
-    stemval = "gfrom_"
+    elabel = "gfrom_"
+    stemval = "from"
 
 
 gfrom_ = _gfrom()
@@ -51,8 +51,8 @@ class _gto(TagBase):
     tagstr = "to-{val}"
     tagops = []
     taghelp = "gradient to color"
-    elabel = "to"
-    stemval = "gto_"
+    elabel = "gto_"
+    stemval = "to"
 
 
 gto_ = _gto()
@@ -62,8 +62,8 @@ class _gvia(TagBase):
     tagstr = "via-{val}"
     tagops = []
     taghelp = "gradient via color"
-    elabel = "gvia"
-    stemval = "gvia_"
+    elabel = "gvia_"
+    stemval = "via"
 
 
 gvia_ = _gvia()

@@ -31,8 +31,6 @@ import aenum
 from addict_tracking_changes import Dict
 from aenum import Enum
 import pysnooper
-from .colors import _ColorBase
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
@@ -66,6 +64,90 @@ def is_scalar(value):
         
     return isinstance(value, (int, float, str, bool))
 
+class _ColorBase:
+    mycolor = None
+    elabel = "color"
+    tagstr = None
+    
+    @classmethod
+    def __truediv__(cls, colorval: str):
+        # we need the instance associated with the color
+        print(cls.mycolor)
+        return _IDivExpr(globals()[cls.mycolor], colorval)
+        #return cls.evaluate(str(colorval))
+
+    @classmethod
+    def evaluate(cls, colorval: str):
+        if colorval == None:
+            return cls.mycolor
+        
+        if colorval == "":
+            return cls.mycolor
+        
+        if colorval == "0":
+            return cls.mycolor
+        # we are nolonger auto filling color val from 5 to 500
+        # if len(colorval) == 1 and colorval[-1] != "0":
+        #     # letting go of the idea of using short form
+        #     assert False
+        #     #return f"{cls.mycolor}-{colorval}00"
+        else:
+            return f"{cls.mycolor}-{colorval}"
+        pass
+
+    @classmethod
+    def keyvaleval(cls, colorval: str):
+        return cls.evaluate(colorval)
+
+    # @ classmethod
+    # def __pow__(cls, colorval):
+    #     print("In __pw")
+    #     return f"{cls.mycolor}-{colorval}00"
+
+    @classmethod
+    def __repr__(cls):
+        return f"{cls.mycolor}"
+
+
+_tw_color_list = [
+    "slate",
+    "gray",
+    "zinc",
+    "neutral",
+    "stone",
+    "red",
+    "orange",
+    "amber",
+    "yellow",
+    "lime",
+    "green",
+    "emerald",
+    "teal",
+    "cyan",
+    "sky",
+    "blue",
+    "indigo",
+    "violet",
+    "purple",
+    "fuchsia",
+    "pink",
+    "rose",
+    "black",
+    "white",
+]
+
+for color in _tw_color_list:
+    globals()[color.capitalize()] = type(
+        color.capitalize(), (_ColorBase,), {"mycolor": color, "tagstr": f"{color}-{{val}}"}
+    )
+
+    globals()[color] = globals()[color.capitalize()]()
+
+def get_color_instance(colorname):
+    assert colorname in _tw_color_list
+    return globals()[colorname]
+
+
 class _IDivExpr:
     def __init__(self,
                  numor,
@@ -90,7 +172,6 @@ class _IDivExpr:
 
 
 
-    #@pysnooper.snoop()
     def evaluate(self, val=None):
         is_denom_scalar = False
         if isinstance(self.denom, _IDivExpr):
@@ -207,7 +288,8 @@ def exact_match_idivexpr_recurse(aidiv_expr, bidiv_expr):
                 logger.debug("mismatch at IDiv:numor.elabel")
                 return False
             else:
-                logger.debug(f"passes IDiv:numor.elabel equality {aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}")
+                #logger.debug(f"passes IDiv:numor.elabel equality {aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}")
+                pass
         except:
             logger.debug(f"Failed Test: aidiv_expr.numor and bidiv_expr.numor are of diff type {aidiv_expr.numor} {bidiv_expr.numor}")
             assert False
@@ -238,7 +320,7 @@ def exact_match_idivexpr_recurse(aidiv_expr, bidiv_expr):
 
     return False
 
-#@pysnooper.snoop()
+import pdb
 def exact_match_idivexpr(aidiv_expr, bidiv_expr):
     if isinstance(aidiv_expr.numor, _IDivExpr) and isinstance(bidiv_expr.numor, _IDivExpr):
         if exact_match_idivexpr_recurse(aidiv_expr.numor, bidiv_expr.numor):
@@ -253,7 +335,9 @@ def exact_match_idivexpr(aidiv_expr, bidiv_expr):
                 logger.debug("mismatch at IDiv:numor.elabel")
                 return False
             else:
-                logger.debug(f"passes IDiv:numor.elabel equality{aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}" )
+                #print(f"passes IDiv:numor.elabel equality{aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}" )
+                pass
+            
         except:
             logger.debug(f"Failed Test: aidiv_expr.numor and bidiv_expr.numor are of diff type {aidiv_expr.numor}  {bidiv_expr.numor}")
             assert False
@@ -265,6 +349,7 @@ def exact_match_idivexpr(aidiv_expr, bidiv_expr):
             # check modifiers
             pass
         else:
+            #print ("NotSame: under recurse")
             return False
 
     elif isinstance(aidiv_expr.denom, _IDivExpr):
@@ -292,7 +377,6 @@ def exact_match_idivexpr(aidiv_expr, bidiv_expr):
     return False
 
 
-#@pysnooper.snoop()    
 def is_same_class_idivexpr_recurse(aidiv_expr, bidiv_expr):
     """
     check if two idiv expr is same
@@ -349,7 +433,6 @@ def is_same_class_idivexpr_recurse(aidiv_expr, bidiv_expr):
 
 
 
-#@pysnooper.snoop()    
 def is_same_class_idivexpr(aidiv_expr, bidiv_expr):
     """
     check if two idiv expr is same
@@ -422,17 +505,20 @@ def remove_from_twtag_list(twsty_taglist, twsty_tag):
 
     remove_idx = None
     for idx, _twtag in enumerate(twsty_taglist):
-        
         if isinstance(_twtag, Enum) or isinstance(_twtag, aenum.EnumType):
+
             continue
 
         if exact_match_idivexpr(twsty_tag, _twtag):
             remove_idx = idx
+
+            break
         
         pass
 
     if remove_idx is None:
         return
+
 
     twsty_taglist.pop(remove_idx)
 

@@ -1,5 +1,8 @@
 from py_tailwind_utils import *
 
+to_remove = encode_twstr("text-sm")
+print(tstr(*to_remove))
+
 # case 1: use to not work
 # twsty_tags = np/start/twpx
 # print (tstr(twsty_tags))

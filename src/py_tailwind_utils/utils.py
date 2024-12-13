@@ -23,9 +23,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 from .style_tags import bg
-from .style_tags import from_
-from .style_tags import to_
-from .style_tags import via_
+from .style_tags import gfrom_
+from .style_tags import gto_
+from .style_tags import gvia_
 
 
 

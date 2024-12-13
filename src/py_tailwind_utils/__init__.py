@@ -26,6 +26,7 @@
 """
 from . import styClause
 from .colors import *
+from .common import *
 from .common import conc_twtags
 from .common import remove_from_twtag_list
 from .common import tstr

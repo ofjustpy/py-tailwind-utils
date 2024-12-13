@@ -4,17 +4,24 @@
 from .style_tags import styTagDict
 from . import  style_values_noop as sv
 from .common import tstr
+from .common import _IDivExpr
+from .common import _tw_color_list, get_color_instance
 from .modifiers import modify
 
 from py_tailwind_utils import mr, st, sl, sb, sr, x, y, auto, pd, np, se, ss,  noop, twpx, priority
-from .colors import _tw_color_list, get_color_instance
-import pysnooper
+
+
+
+
 
 sv_map = {}
 for en, eo in sv.styValueDict.items():
     enum_class = eo._sv_class
     for _ in enum_class:
-        sv_map[_.value] = getattr(eo, _.name)
+        # using lambda: we need a new instance of each
+        # split is required to remove extra space 
+        sv_map[_.value] = lambda x = eo, y = _ : getattr(x, y.name)
+        
         
         
 # style tag mapping
@@ -159,7 +166,11 @@ def encode_style_tag(the_meat, all_modifiers):
     if has_priority_prefix:
         restag = priority/restag
         
-    tags = [noop/restag]
+
+    if isinstance(restag, _IDivExpr):
+        tags = [restag]
+    else:
+        tags = [noop/restag]
     for mod in reversed(all_modifiers):
         tags = modify(*tags, modifier=mod)
         
@@ -220,22 +231,24 @@ def encode_twstr(twstr):
         the_meat = stuff[-1]
         
         if the_meat in sv_map:
-            restag = sv_map[the_meat]
-            # no need for noop -- already present in sv_map
-            #restag = noop/restag # so simple -- but creates massive bugs noop/noop/style-vale will create big problems
-            
-            res = [noop/restag]
+            restag = sv_map[the_meat]()
+            assert isinstance(restag, _IDivExpr)
+            res = [restag]
 
             for mod in reversed(all_modifiers):
                 res = modify(*res, modifier=mod)
             assert len(res) == 1
             
             tags.append(res[0])
+            assert _ == tstr(res[0]).split()[0]
         else:
             res = encode_style_tag(the_meat, all_modifiers)
             if res:
                 tags.append(res)
-
+                assert _ == tstr(res).split()[0]
+                
+            else:
+                assert False
 
     decoded = tstr(*tags)
     # make sure the decoded is same as encoded
