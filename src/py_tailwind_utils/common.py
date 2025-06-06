@@ -108,7 +108,52 @@ class _ColorBase:
     def __repr__(cls):
         return f"{cls.mycolor}"
 
+class _PresetBase:
+    mypreset = None
+    elabel = "preset"
+    tagstr = None
+    
+    @classmethod
+    def __truediv__(cls, presetval: str):
+        return _IDivExpr(globals()[cls.mypreset], presetval)
 
+    @classmethod
+    def evaluate(cls, presetval: str):
+        if presetval == None:
+            return f"preset-{cls.mypreset[1:]}"
+        
+        if presetval == "":
+            return  f"preset-{cls.mypreset[1:]}"
+        
+        if presetval == "0":
+            return f"preset-{cls.mypreset[1:]}"
+        else:
+            return f"preset-{cls.mypreset[1:]}-{presetval}"
+        pass
+
+    @classmethod
+    def keyvaleval(cls, presetval: str):
+        return cls.evaluate(presetval)
+
+    @classmethod
+    def __repr__(cls):
+        return f"{cls.mypreset}"
+
+_skui_preset_list = ["pfilled",
+                   "ptonal",
+                   "poutlined",
+                   "ptypo"
+                   ]
+
+for preset in _skui_preset_list:
+    globals()[preset.capitalize()] = type(
+        preset.capitalize(), (_PresetBase,), {"mypreset": preset, "tagstr": f"preset-{preset[1:]}-{{val}}"}
+    )
+
+    globals()[preset] = globals()[preset.capitalize()]()
+
+
+    
 _tw_color_list = [
     "slate",
     "gray",
@@ -192,6 +237,8 @@ class _IDivExpr:
                 is_denom_scalar = True
         elif isinstance(self.denom, _ColorBase):
             subval =  self.denom.evaluate(colorval=val)
+        elif isinstance(self.denom, _PresetBase):
+            subval =  self.denom.evaluate(colorval=val)            
 
         else:
             if is_scalar(self.denom):
@@ -215,6 +262,8 @@ class _IDivExpr:
                 return self.numor.evaluate(val=subval)
         elif isinstance(self.numor, _ColorBase):
             return self.numor.evaluate(colorval=subval)
+        elif isinstance(self.numor, _PresetBase):
+            return self.numor.evaluate(presetval=subval)
         else:
             raise ValueError("Unknow _IDivExpr.numor type")
             

@@ -1137,6 +1137,15 @@ class _BorderRadius:
     def xl3(cls):
         return noop / sv.BorderRadius.xl3
 
+    @property
+    def container(cls):
+        return noop / sv.BorderRadius.container
+
+    @property
+    def base(cls):
+        return noop / sv.BorderRadius.base    
+    
+    
 
 BorderRadius = _BorderRadius()
 
@@ -1873,7 +1882,10 @@ class _BreakInside:
     def avoid_column(cls):
         return noop / cls._sv_class.avoid_column
 
-BreakInside =  _BreakInside()   
+BreakInside =  _BreakInside()
+
+
+
 def filter(name):
     if hasattr(current_module, "_" + name):
         if isinstance(getattr(current_module, "_" + name), type):

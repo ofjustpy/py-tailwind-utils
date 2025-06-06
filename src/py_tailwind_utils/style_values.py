@@ -423,6 +423,8 @@ class BorderRadius(Enum):
     xl = "rounded-xl"
     xl2 = "rounded-2xl"
     xl3 = "rounded-3xl"
+    container = "rounded-container" # provided by skeletonui
+    base = "rounded-base"
     pass
 
 
@@ -656,6 +658,8 @@ class Animation(Enum):
     ping = "animate-ping"
     pulse = "animate-pulse"
     bounce = "animate-bounce"
+
+
     
 current_module = sys.modules[__name__]
 styValueDict = dict(

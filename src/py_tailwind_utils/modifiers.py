@@ -30,6 +30,7 @@ from aenum import EnumType
 
 from .style_tags import noop
 
+#OSM: on state modifiers
 
 def modify(*args, modifier: str = ""):
     for arg in args:
@@ -96,3 +97,11 @@ modifier_fn_dict = {
     "placeholder": placeholder,
     "focus": focus,
 }
+
+class OSM(Enum):
+    S = selection
+    P = placeholder
+    H = hover
+    F = focus
+    A = active
+    

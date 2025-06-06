@@ -193,7 +193,11 @@ _tw_keywords_val = [
     "screen",
     "clip",
     "decoration",
-    "underline"
+    "underline",
+    "accent",
+    "caret",
+    "fill",
+    
 ]
 for kw in _tw_keywords_val:
     globals()[f"_{kw}"] = type(
@@ -311,16 +315,17 @@ class _pd(TagBase):
 
 pd = _pd()
 
+# From v3 use placeholder: to change the color
 
-class _ph(TagBase):
-    tagstr = "placeholder-{val}"
-    tagops = []
-    taghelp = "placeholder"
-    elabel = "ph"
-    stemval = "placeholder"
+# class _ph(TagBase):
+#     tagstr = "placeholder-{val}"
+#     tagops = []
+#     taghelp = "placeholder"
+#     elabel = "ph"
+#     stemval = "placeholder"
 
 
-ph = _ph()
+# ph = _ph()
 
 
 class _resize(TagBase):
