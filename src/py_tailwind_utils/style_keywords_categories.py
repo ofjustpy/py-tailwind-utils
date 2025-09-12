@@ -12,7 +12,7 @@
 
 #. TODO: ring : inset
 #. se ss sss sse 
-almost_universal = [none, inherit, none, auto, visible, invisble, collapse, double, max, min, offset, row, col, end, sb, sl, sr, st, ]
+almost_universal = [none, inherit, none, auto, visible, invisble, collapse, double, offset, row, col, end, sb, sl, sr, st, ]
 
 entities = [
     sv.BoxTopo
@@ -170,7 +170,7 @@ layout = [  #in-use in style_keywords_categories_sbs
     ]
 
 #TODO: stroke
-sizing = [W, H, full, min, max, size, screen, space]
+sizing = [W, H, full,  size, screen, space]
 
 # https://tailwindcss.com/docs/display
 layout_display = [hidden,  sv.DisplayBox, ]

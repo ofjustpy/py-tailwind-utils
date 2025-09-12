@@ -43,7 +43,10 @@ _skui_keywords_val = [
     "label",
     "input",
     "select",
-    "placeholder"
+    "placeholder",
+    "title", # skeletonui topography
+    "subtitle"
+    
     ]
 for kw in _skui_keywords_val:
     globals()[f"_{kw}"] = type(

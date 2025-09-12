@@ -142,7 +142,7 @@ class _PresetBase:
 _skui_preset_list = ["pfilled",
                    "ptonal",
                    "poutlined",
-                   "ptypo"
+                     "ptypo",
                    ]
 
 for preset in _skui_preset_list:

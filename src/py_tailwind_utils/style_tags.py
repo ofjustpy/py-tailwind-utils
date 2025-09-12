@@ -131,7 +131,6 @@ _tw_keywords = [
     "scroll",
     "span",
     "text",
-    "auto",
     "group",
     "double",
     "grow",
@@ -162,8 +161,6 @@ _tw_keywords_val = [
     "y",
     "duration",
     "inset",
-    "max",
-    "min",
     "offset",
     "opacity",
     "order",
@@ -197,6 +194,7 @@ _tw_keywords_val = [
     "accent",
     "caret",
     "fill",
+    "auto"
     
 ]
 for kw in _tw_keywords_val:

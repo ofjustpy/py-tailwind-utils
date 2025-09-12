@@ -1,7 +1,10 @@
 from py_tailwind_utils import *
 
-to_remove = encode_twstr("text-sm")
-print(tstr(*to_remove))
+enc_twsty_tags = encode_twstr("auto-rows-min")
+print(enc_twsty_tags)
+
+# to_remove = encode_twstr("text-sm")
+# print(tstr(*to_remove))
 
 # case 1: use to not work
 # twsty_tags = np/start/twpx
