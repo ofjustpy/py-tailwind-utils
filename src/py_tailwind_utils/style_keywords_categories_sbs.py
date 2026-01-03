@@ -12,7 +12,7 @@ import ofjustpy_react as ojr
 
 # TODO: modifiers
 
-almost_universal = [StyT.none, StyT.inherit, StyT.auto, StyT.double, StyT.max, StyT.min, StyT.offset, StyT.row,
+almost_universal = [StyT.none, StyT.inherit, StyT.auto, StyT.double, StyT.twmax, StyT.twmin, StyT.offset, StyT.row,
                     StyT.col, StyT.start, StyT.end, StyT.sb, StyT.sl, StyT.sr, StyT.st ,   StyT.x, 
      StyT.y,                  ]
 
