@@ -25,11 +25,9 @@
 """wrapper over dpath.util to 
 """
 import logging
-import os
 
-if os:
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 from dpath import (
@@ -163,7 +161,7 @@ def dsearch(tdict, dpath):
             assert isinstance(dlobj, list) or isinstance(dlobj, UserList)
             if len(dlobj) > curr_keyidx:
                 # steps.pop(0)
-                if steps:
+                if steps[1:]:
                     yield from dsearch_recurse(dlobj[curr_keyidx], steps[1:])
                 else:
                     yield dlobj[curr_keyidx]

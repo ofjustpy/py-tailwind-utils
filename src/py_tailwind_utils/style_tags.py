@@ -393,7 +393,7 @@ class _ss(TagBase):
 ss = _ss()
 
 class _se(TagBase):
-    "side start based on text direction"
+    "side end based on text direction"
     tagstr = "e-{val}"
     tagops = []
     taghelp = "RTL:side end"

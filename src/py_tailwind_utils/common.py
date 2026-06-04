@@ -24,13 +24,10 @@
 # SOFTWARE.
 
 import logging
-import os
-import sys
 
 import aenum
 from addict_tracking_changes import Dict
 from aenum import Enum
-import pysnooper
 
 logger = logging.getLogger(__name__)
 logger.setLevel(level=logging.INFO)
@@ -64,6 +61,15 @@ def is_scalar(value):
         
     return isinstance(value, (int, float, str, bool))
 
+def is_scalar_copy(value):
+    if isTwTagType(value):
+        if value.elabel == "auto":
+            return True
+        else:
+            return False
+        
+    return isinstance(value, (int, float, str, bool))
+
 class _ColorBase:
     mycolor = None
     elabel = "color"
@@ -72,7 +78,6 @@ class _ColorBase:
     @classmethod
     def __truediv__(cls, colorval: str):
         # we need the instance associated with the color
-        print(cls.mycolor)
         return _IDivExpr(globals()[cls.mycolor], colorval)
         #return cls.evaluate(str(colorval))
 
@@ -215,62 +220,160 @@ class _IDivExpr:
         self.denom = tt
         return self
 
-
-
     def evaluate(self, val=None):
-        is_denom_scalar = False
-        if isinstance(self.denom, _IDivExpr):
-            subval = self.denom.evaluate(val = val)
-        elif isinstance(self.denom, aenum.Enum) or isinstance(self.denom, aenum.EnumType):
-            subval = self.denom.value
-        elif isTwTagType(self.denom):
-            if hasattr(self.denom, "tagstr_s"):
-                if val != None: 
-                    subval = self.denom.tagstr_s.format(val=val)
-                else:
-                    raise ValueError("None found at value ")
-            else:
-                subval =  self.denom.evaluate(val=val)
+        """
+        Resolves the expression tree by first evaluating the denominator (the value)
+        and then applying it to the numerator (the prefix).
+        """
+        # 1. RESOLVE THE DENOMINATOR (The "Value" or "Sub-Expression")
+        subval, is_denom_scalar = self._resolve_denominator(val)
+        # 2. APPLY TO THE NUMERATOR (The "Prefix" or "Tag")
+        return self._apply_to_numerator(subval, is_denom_scalar)
 
-            # its m-auto and not mauto
-            if self.denom.elabel == "auto":
-                is_denom_scalar = True
-        elif isinstance(self.denom, _ColorBase):
-            subval =  self.denom.evaluate(colorval=val)
-        elif isinstance(self.denom, _PresetBase):
-            subval =  self.denom.evaluate(colorval=val)            
-
-        else:
-            if is_scalar(self.denom):
-                is_denom_scalar = True
-            else:
-                raise ValueError("Unkonwn type denom: ", self.denom)
+    def _resolve_denominator(self, val=None):
+        """Internal helper to determine the value of the right-hand side."""
+        d = self.denom
+        
+        # Case: Nested Expression
+        if isinstance(d, _IDivExpr):
+            return d.evaluate(val=val), False
             
-            subval = self.denom
+        # Case: Enums
+        if isinstance(d, (aenum.Enum, aenum.EnumType)):
+            return d.value, False
+            
+        # Case: Colors or Presets
+        if isinstance(d, (_ColorBase, _PresetBase)):
+            return d.evaluate(val), False
+
+        # Case: Tailwind Tag Types
+        if isTwTagType(d):
+            # Special case for "auto" labels
+            
+            if hasattr(d, "tagstr_s"):
+                if val is None:
+                    raise ValueError(f"Template tag {d} requires a value but got None")
+                return d.tagstr_s.format(val=val), is_scalar(d)
+            
+            return d.evaluate(val=val), is_scalar(d)
+
+        # Case: Scalars (Int, Str, etc.)
+        if is_scalar_copy(d):
+            return d, True
+
+        raise ValueError(f"Unknown denominator type: {type(d)} for {d}")
+
+    def _apply_to_numerator(self, subval, is_denom_scalar):
+        """Internal helper to wrap the subval with the left-hand side prefix."""
+        n = self.numor
+
+        # Case: Nested Expression (Pass subval up the chain)
+        if isinstance(n, _IDivExpr):
+            return n.evaluate(val=subval)
+
+        # Case: Colors
+        if isinstance(n, _ColorBase):
+            return n.evaluate(colorval=subval)
+
+        # Case: Presets
+        if isinstance(n, _PresetBase):
+            return n.evaluate(presetval=subval)
+
+        # Case: Tailwind Tag Types
+        if isTwTagType(n):
+            # If the value is a terminal scalar, use the template string directly
+            if is_denom_scalar and hasattr(n, "tagstr_s"):
+                return n.tagstr_s.format(val=subval)
+            
+            # Otherwise, delegate to the tag's internal evaluation
+            return n.evaluate(val=subval)
+
+        raise ValueError(f"Unknown numerator type: {type(n)} for {n}")
+
+    
+    
+
+    # def evaluate(self, val=None):
+    #     is_denom_scalar = False
+    #     if isinstance(self.denom, _IDivExpr):
+    #         subval = self.denom.evaluate(val = val)
+    #     elif isinstance(self.denom, aenum.Enum) or isinstance(self.denom, aenum.EnumType):
+    #         subval = self.denom.value
+    #     elif isTwTagType(self.denom):
+    #         if hasattr(self.denom, "tagstr_s"):
+    #             if val != None: 
+    #                 subval = self.denom.tagstr_s.format(val=val)
+    #             else:
+    #                 raise ValueError("None found at value ")
+    #         else:
+    #             subval =  self.denom.evaluate(val=val)
+
+    #         # its m-auto and not mauto
+    #         if self.denom.elabel == "auto":
+    #             is_denom_scalar = True
+    #     elif isinstance(self.denom, _ColorBase):
+    #         subval =  self.denom.evaluate(colorval=val)
+    #     elif isinstance(self.denom, _PresetBase):
+    #         subval =  self.denom.evaluate(colorval=val)            
+
+    #     else:
+    #         if is_scalar(self.denom):
+    #             is_denom_scalar = True
+    #         else:
+    #             raise ValueError("Unkonwn type denom: ", self.denom)
+            
+    #         subval = self.denom
 
         
-        if isinstance(self.numor, _IDivExpr):
-            return self.numor.evaluate(val=subval)
-        elif isTwTagType(self.numor):
-            if hasattr(self.numor, "tagstr_s"):
-                if is_denom_scalar:
-                    return self.numor.tagstr_s.format(val=subval)
-                else:
-                    return self.numor.evaluate(val=subval)
+    #     if isinstance(self.numor, _IDivExpr):
+    #         return self.numor.evaluate(val=subval)
+    #     elif isTwTagType(self.numor):
+    #         if hasattr(self.numor, "tagstr_s"):
+    #             if is_denom_scalar:
+    #                 return self.numor.tagstr_s.format(val=subval)
+    #             else:
+    #                 return self.numor.evaluate(val=subval)
                 
-            else:
-                return self.numor.evaluate(val=subval)
-        elif isinstance(self.numor, _ColorBase):
-            return self.numor.evaluate(colorval=subval)
-        elif isinstance(self.numor, _PresetBase):
-            return self.numor.evaluate(presetval=subval)
-        else:
-            raise ValueError("Unknow _IDivExpr.numor type")
+    #         else:
+    #             return self.numor.evaluate(val=subval)
+    #     elif isinstance(self.numor, _ColorBase):
+    #         return self.numor.evaluate(colorval=subval)
+    #     elif isinstance(self.numor, _PresetBase):
+    #         return self.numor.evaluate(presetval=subval)
+    #     else:
+    #         raise ValueError("Unknow _IDivExpr.numor type")
             
 
-        assert False
-    def keyvaleval(self, val=""):
-        raise ValueError
+    #     assert False
+
+    # TODO: 
+    def keyvaleval(self):
+        """
+        Returns a representation of the _IDivExpr for the JSON builder.
+        - Simple case (pd/4): returns ("pd", "4")
+        - Nested case (pd/sl/4): returns ("pd", ("sl", "4"))
+        """
+        # 1. Identify the 'key' (the numerator)
+        # We strip any internal object wrappers to get the string tag
+        assert not isinstance(self.numor, _IDivExpr), \
+        f"Unexpected nested _IDivExpr in numor: {self.numor}. 4 clause expression not supported"
+        
+        key = self.numor.elabel
+
+        # 2. Resolve the 'value' (the denominator)
+        denom = self.denom
+
+        if isinstance(denom, _IDivExpr):
+            # Case: pd / (sl / 4)
+            # Recursively call keyvaleval on the denominator
+            # This returns the nested tuple: ("sl", "4")
+            return (key, denom.keyvaleval())
+
+        else:
+            # Case: pd / 4
+            # Just return the tag and the raw value
+            return (key, denom)
+    
 
 
 class TagBase:
@@ -323,107 +426,106 @@ def tstr(*args, prefix=""):
     return res
 
 
-def exact_match_idivexpr_recurse(aidiv_expr, bidiv_expr):
-    if isinstance(aidiv_expr.numor, _IDivExpr) and isinstance(bidiv_expr.numor, _IDivExpr):
-        if exact_match_idivexpr_recurse(aidiv_expr.numor, bidiv_expr.numor):
-            pass
-        else:
+# def exact_match_idivexpr_recurse(aidiv_expr, bidiv_expr):
+#     if isinstance(aidiv_expr.numor, _IDivExpr) and isinstance(bidiv_expr.numor, _IDivExpr):
+#         if exact_match_idivexpr_recurse(aidiv_expr.numor, bidiv_expr.numor):
+#             pass
+#         else:
             
-            return False
-    else:
-        try:
+#             return False
+#     else:
+#         try:
 
-            if aidiv_expr.numor.elabel != bidiv_expr.numor.elabel:
-                logger.debug("mismatch at IDiv:numor.elabel")
-                return False
-            else:
-                #logger.debug(f"passes IDiv:numor.elabel equality {aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}")
-                pass
-        except:
-            logger.debug(f"Failed Test: aidiv_expr.numor and bidiv_expr.numor are of diff type {aidiv_expr.numor} {bidiv_expr.numor}")
-            assert False
+#             if aidiv_expr.numor.elabel != bidiv_expr.numor.elabel:
+#                 logger.debug("mismatch at IDiv:numor.elabel")
+#                 return False
+#             else:
+#                 #logger.debug(f"passes IDiv:numor.elabel equality {aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}")
+#                 pass
+#         except:
+#             logger.debug(f"Failed Test: aidiv_expr.numor and bidiv_expr.numor are of diff type {aidiv_expr.numor} {bidiv_expr.numor}")
+#             assert False
 
-    if isinstance(aidiv_expr.denom, _IDivExpr) and isinstance(bidiv_expr.denom, _IDivExpr):
+#     if isinstance(aidiv_expr.denom, _IDivExpr) and isinstance(bidiv_expr.denom, _IDivExpr):
 
-        if exact_match_idivexpr_recurse(aidiv_expr.denom,
-                                          bidiv_expr.denom):
-            # check modifiers
-            pass
-        else:
-            return False
+#         if exact_match_idivexpr_recurse(aidiv_expr.denom,
+#                                           bidiv_expr.denom):
+#             # check modifiers
+#             pass
+#         else:
+#             return False
 
-    elif isinstance(aidiv_expr.denom, _IDivExpr):
-        return False
+#     elif isinstance(aidiv_expr.denom, _IDivExpr):
+#         return False
 
-    elif isinstance(bidiv_expr.denom, _IDivExpr):
-        return False
+#     elif isinstance(bidiv_expr.denom, _IDivExpr):
+#         return False
     
-    else:
-        # both denom are non _IDivExpr 
-        if aidiv_expr.denom == bidiv_expr.denom:
-            logger.debug(f"denom: LHS == RHS due to type equality: {aidiv_expr.denom} {bidiv_expr.denom}")
-            return True
-        else:
-            return False
+#     else:
+#         # both denom are non _IDivExpr 
+#         if aidiv_expr.denom == bidiv_expr.denom:
+#             logger.debug(f"denom: LHS == RHS due to type equality: {aidiv_expr.denom} {bidiv_expr.denom}")
+#             return True
+#         else:
+#             return False
     
 
-    return False
+#     return False
 
-import pdb
-def exact_match_idivexpr(aidiv_expr, bidiv_expr):
-    if isinstance(aidiv_expr.numor, _IDivExpr) and isinstance(bidiv_expr.numor, _IDivExpr):
-        if exact_match_idivexpr_recurse(aidiv_expr.numor, bidiv_expr.numor):
-            pass
-        else:
+# def exact_match_idivexpr(aidiv_expr, bidiv_expr):
+#     if isinstance(aidiv_expr.numor, _IDivExpr) and isinstance(bidiv_expr.numor, _IDivExpr):
+#         if exact_match_idivexpr_recurse(aidiv_expr.numor, bidiv_expr.numor):
+#             pass
+#         else:
             
-            return False
-    else:
-        try:
+#             return False
+#     else:
+#         try:
 
-            if aidiv_expr.numor.elabel != bidiv_expr.numor.elabel:
-                logger.debug("mismatch at IDiv:numor.elabel")
-                return False
-            else:
-                #print(f"passes IDiv:numor.elabel equality{aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}" )
-                pass
+#             if aidiv_expr.numor.elabel != bidiv_expr.numor.elabel:
+#                 logger.debug("mismatch at IDiv:numor.elabel")
+#                 return False
+#             else:
+#                 #print(f"passes IDiv:numor.elabel equality{aidiv_expr.numor.elabel} {bidiv_expr.numor.elabel}" )
+#                 pass
             
-        except:
-            logger.debug(f"Failed Test: aidiv_expr.numor and bidiv_expr.numor are of diff type {aidiv_expr.numor}  {bidiv_expr.numor}")
-            assert False
+#         except:
+#             logger.debug(f"Failed Test: aidiv_expr.numor and bidiv_expr.numor are of diff type {aidiv_expr.numor}  {bidiv_expr.numor}")
+#             assert False
 
-    if isinstance(aidiv_expr.denom, _IDivExpr) and isinstance(bidiv_expr.denom, _IDivExpr):
+#     if isinstance(aidiv_expr.denom, _IDivExpr) and isinstance(bidiv_expr.denom, _IDivExpr):
 
-        if exact_match_idivexpr_recurse(aidiv_expr.denom,
-                                          bidiv_expr.denom):
-            # check modifiers
-            pass
-        else:
-            #print ("NotSame: under recurse")
-            return False
+#         if exact_match_idivexpr_recurse(aidiv_expr.denom,
+#                                           bidiv_expr.denom):
+#             # check modifiers
+#             pass
+#         else:
+#             #print ("NotSame: under recurse")
+#             return False
 
-    elif isinstance(aidiv_expr.denom, _IDivExpr):
-        return False
+#     elif isinstance(aidiv_expr.denom, _IDivExpr):
+#         return False
 
-    elif isinstance(bidiv_expr.denom, _IDivExpr):
-        return False
+#     elif isinstance(bidiv_expr.denom, _IDivExpr):
+#         return False
     
-    else:
-        # both denom are non _IDivExpr 
-        if aidiv_expr.denom == bidiv_expr.denom:
-            logger.debug(f"denom: LHS == RHS due to type equality:   {aidiv_expr.denom}  {bidiv_expr.denom}")
-            pass
-        else:
-            logger.debug(f"infer not same: demon unequal: {aidiv_expr.denom} {bidiv_expr.denom}")
-            return False
+#     else:
+#         # both denom are non _IDivExpr 
+#         if aidiv_expr.denom == bidiv_expr.denom:
+#             logger.debug(f"denom: LHS == RHS due to type equality:   {aidiv_expr.denom}  {bidiv_expr.denom}")
+#             pass
+#         else:
+#             logger.debug(f"infer not same: demon unequal: {aidiv_expr.denom} {bidiv_expr.denom}")
+#             return False
     
-    if aidiv_expr.modifier_chain == bidiv_expr.modifier_chain:
-        logger.debug("Passes modifier_chain equality")
-        return True
-    else:
-        logger.debug("Failed modifier_chain equality")
-        return False
+#     if aidiv_expr.modifier_chain == bidiv_expr.modifier_chain:
+#         logger.debug("Passes modifier_chain equality")
+#         return True
+#     else:
+#         logger.debug("Failed modifier_chain equality")
+#         return False
 
-    return False
+#     return False
 
 
 def is_same_class_idivexpr_recurse(aidiv_expr, bidiv_expr):
@@ -546,6 +648,47 @@ def is_same_class_idivexpr(aidiv_expr, bidiv_expr):
 
     return False
 
+
+def exact_match_idivexpr(a, b, check_modifiers=True):
+    """
+    Determines if two Tailwind expressions are structurally identical.
+    
+    :param a: First expression/tag
+    :param b: Second expression/tag
+    :param check_modifiers: If True, validates the modifier_chain (e.g., hover:)
+    """
+    # 1. Base Case: If they aren't the same type, they aren't a match
+    if type(a) != type(b):
+        logger.debug(f"Type mismatch: {type(a)} vs {type(b)}")
+        return False
+
+    # 2. Handle _IDivExpr recursion
+    if isinstance(a, _IDivExpr):
+        # Check Numerators (Deep Recurse)
+        if not exact_match_idivexpr(a.numor, b.numor, check_modifiers=False):
+            return False
+            
+        # Check Denominators (Deep Recurse)
+        if not exact_match_idivexpr(a.denom, b.denom, check_modifiers=False):
+            return False
+
+        # 3. Top-level Modifier Check
+        if check_modifiers:
+            if a.modifier_chain != b.modifier_chain:
+                logger.debug(f"Modifier mismatch: {a.modifier_chain} != {b.modifier_chain}")
+                return False
+        
+        return True
+
+    # 4. Handle Terminal Tags (Base types with .elabel)
+    if hasattr(a, 'elabel') and hasattr(b, 'elabel'):
+        if a.elabel == b.elabel:
+            return True
+        logger.debug(f"Label mismatch: {a.elabel} != {b.elabel}")
+        return False
+
+    # 5. Handle Scalars/Enums (Leaf nodes)
+    return a == b
 
 def remove_from_twtag_list(twsty_taglist, twsty_tag):
     if isinstance(twsty_tag, Enum) or isinstance(twsty_tag, aenum.EnumType):

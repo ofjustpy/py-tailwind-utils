@@ -42,78 +42,117 @@ from .style_values_noop import styValueDict
 def compose(*functions):
     return functools.reduce(lambda f, g: lambda x: f(*g(x)), functions, lambda x: x)
 
-
-def to_json(*args, prefix=""):
+def to_json(*args):
     """
-    convert styClause from list of IDivExpr to json/dict
+    Refactored to convert _IDivExpr chains into a structured Dict.
     """
-    if len(args) > 0:
-        if isinstance(args[0], list):
-            raise ValueError("error in to_json argument passing")
-
-    # print("=============begin tstr============")
     res = Dict()
-    # keep all directives that are specified as string
-    res.passthrough = []
+    
     for arg in args:
-        if isinstance(arg, Enum):
-            print("R")
-            res[arg.__class__.__name__]["_val"] = arg.name
-            try:
-                res[arg.__class__.__name__]["_modifier_chain"] = arg.modifier_chain
-
-            except:
-                pass
         if isinstance(arg, _IDivExpr):
-            kv = arg.keyvaleval()
-            if isinstance(kv[1], tuple):
-                if isinstance(kv[1][1], tuple):
-                    print("get_styReport:Warning: too many nested tuple = ", arg)
-                    raise ValueError
-                else:
-                    if not res[kv[0]]:
-                        res[kv[0]] = []
+            # 1. Get the nested tuple: e.g., ('pd', ('sb', ('st', 4)))
+            kv_tuple = arg.keyvaleval()
+            
+            # 2. Extract the root key (e.g., 'pd')
+            root_key = kv_tuple[0]
+            if not res[root_key]:
+                res[root_key] = []
 
-                    tt = Dict(
-                        {
-                            "_val": kv[1][1],
-                        }
-                    )
-                    res[kv[0]].append(
-                        Dict({kv[1][0]: tt, "_modifier_chain": arg.modifier_chain})
-                    )
-            else:
-                if not res[kv[0]]:
-                    # create list to store all utility directives for a feature.
-                    # for e.g. feature='bg' utility directives= "blue-100'
-                    res[kv[0]] = []
-                res[kv[0]].append(
-                    Dict({"_val": kv[1], "_modifier_chain": arg.modifier_chain})
-                )
-                # res[kv[0]]= ['_val'] = kv[1]
-            # try:
-            #     res[kv[0]]['_modifier_chain'] = arg.modifier_chain
-            #     print ("how come")
-
-            # except:
-            #     print ("scenario 4")
-            #     assert False
-            #     res[kv[0]]['_modifier_chain'] = [None]
-            #     pass
-        if isinstance(arg, TagBase):
-            kv = arg.keyvaleval()
-            res[kv[0]]["_val"] = kv[1]
-            try:
-                res[kv[0]]["_modifier_chain"] = arg.modifier_chain
-            except:
-                pass
-        if isinstance(arg, str):
-            print("get_styReport:Warning: skipping sty attr = ", arg)
-            res.passthrough.append(arg)
+            # 3. Recursively unpack the remainder of the tuple
+            # This handles any depth (sb/st/4) without explicit if-statements
+            payload = _unpack_kv_remainder(kv_tuple[1])
+            
+            # 4. Attach the modifier chain from the top-level expression
+            payload["_modifier_chain"] = getattr(arg, 'modifier_chain', None)
+            
+            res[root_key].append(payload)
+            
     return res
 
+def _unpack_kv_remainder(item):
+    """
+    Helper to turn ('sb', ('st', 4)) into {'sb': {'st': {'_val': 4}}} 
+    or just {'_val': 4} if it's a leaf.
+    """
+    if isinstance(item, tuple):
+        # We have more nesting: item is (key, value)
+        key, value = item
+        return Dict({key: _unpack_kv_remainder(value)})
+    
+    # Terminal case: item is the raw value (e.g., 4 or "auto")
+    return Dict({"_val": item})
 
-# ================================ end ===============================
+
+# def to_json(*args, prefix=""):
+#     """
+#     convert styClause from list of IDivExpr to json/dict
+#     """
+#     if len(args) > 0:
+#         if isinstance(args[0], list):
+#             raise ValueError("error in to_json argument passing")
+
+#     # print("=============begin tstr============")
+#     res = Dict()
+#     # keep all directives that are specified as string
+#     res.passthrough = []
+#     for arg in args:
+#         if isinstance(arg, Enum):
+#             res[arg.__class__.__name__]["_val"] = arg.name
+#             try:
+#                 res[arg.__class__.__name__]["_modifier_chain"] = arg.modifier_chain
+
+#             except:
+#                 pass
+#         if isinstance(arg, _IDivExpr):
+#             kv = arg.keyvaleval()
+#             if isinstance(kv[1], tuple):
+#                 if isinstance(kv[1][1], tuple):
+#                     print("get_styReport:Warning: too many nested tuple = ", arg)
+#                     raise ValueError
+#                 else:
+#                     if not res[kv[0]]:
+#                         res[kv[0]] = []
+
+#                     tt = Dict(
+#                         {
+#                             "_val": kv[1][1],
+#                         }
+#                     )
+#                     res[kv[0]].append(
+#                         Dict({kv[1][0]: tt, "_modifier_chain": arg.modifier_chain})
+#                     )
+#             else:
+#                 if not res[kv[0]]:
+#                     # create list to store all utility directives for a feature.
+#                     # for e.g. feature='bg' utility directives= "blue-100'
+#                     res[kv[0]] = []
+#                 res[kv[0]].append(
+#                     Dict({"_val": kv[1], "_modifier_chain": arg.modifier_chain})
+#                 )
+#                 # res[kv[0]]= ['_val'] = kv[1]
+#             # try:
+#             #     res[kv[0]]['_modifier_chain'] = arg.modifier_chain
+#             #     print ("how come")
+
+#             # except:
+#             #     print ("scenario 4")
+#             #     assert False
+#             #     res[kv[0]]['_modifier_chain'] = [None]
+#             #     pass
+#         if isinstance(arg, TagBase):
+#             kv = arg.keyvaleval()
+#             res[kv[0]]["_val"] = kv[1]
+#             try:
+#                 res[kv[0]]["_modifier_chain"] = arg.modifier_chain
+#             except:
+#                 pass
+#         if isinstance(arg, str):
+#             print("get_styReport:Warning: skipping sty attr = ", arg)
+#             res.passthrough.append(arg)
+#     return res
+
+
+# # ================================ end ===============================
 
 
 # ============== from json styreport to tstr expression ==============
@@ -136,7 +175,7 @@ def to_clause(styreport):
                 *[modifier_fn_dict[modifier] for modifier in val._modifier_chain]
             )
         except:
-            print("hitting exceptins")
+            print("hitting exceptions")
 
             def modifier_fn(x):
                 return x

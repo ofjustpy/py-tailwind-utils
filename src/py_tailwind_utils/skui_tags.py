@@ -1,5 +1,3 @@
-import sys
-
 from .common import TagBase, _ColorBase, _IDivExpr, _PresetBase
 from .style_tags import noop
 _skui_color_list = ["primary",
