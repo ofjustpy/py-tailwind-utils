@@ -280,6 +280,17 @@ class FontSize(Enum):
 # TDB docs/font-smoothing
 # TBD docs/font-style
 
+class FontStretch(Enum):
+    ultra_condensed = "font-stretch-ultra-condensed"
+    extra_condensed = "font-stretch-extra-condensed"
+    condensed = "font-stretch-condensed"
+    semi_condensed = "font-stretch-semi-condensed"
+    normal = "font-stretch-normal"
+    semi_expanded = "font-stretch-semi-expanded"
+    expanded = "font-stretch-expanded"
+    extra_expanded = "font-stretch-extra-expanded"
+    ultra_expanded = "font-stretch-ultra-expanded"
+    
 
 class FontWeight(Enum):
     thin = "font-thin"
@@ -383,8 +394,8 @@ class VerticalAlign(Enum):
     bottom = "align-bottom"
     texttop = "align-text-top"
     textbottom = "align-text-bottom"
-    alignsub = "align-sub"
-    alignsuper = "align-super"
+    sub = "align-sub"
+    super = "align-super"
     # few others left out
 
     pass
@@ -567,15 +578,16 @@ class WordBreak(Enum):
     all = "break-all"
     keep = "break-keep"
 
-class GridAuto(Enum):
-    cauto = "grid-cols-auto"
-    cmin = "grid-cols-min"
-    cmax = "grid-cols-max"
-    cfr = "grid-cols-fr"
-    rauto = "grid-rows-auto"
-    rmin = "grid-ros-min"
-    rmax = "grid-rows-max"
-    rfr = "grid-rows-fr"
+#. TODO: has been replaced with grid-auto-rows and grid-auto-cols     
+# class GridAuto(Enum):
+#     cauto = "grid-cols-auto"
+#     cmin = "grid-cols-min"
+#     cmax = "grid-cols-max"
+#     cfr = "grid-cols-fr"
+#     rauto = "grid-rows-auto"
+#     rmin = "grid-ros-min"
+#     rmax = "grid-rows-max"
+#     rfr = "grid-rows-fr"
 
 class Transition(Enum):
     none = "transition-none"

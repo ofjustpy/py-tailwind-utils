@@ -746,6 +746,48 @@ class _FontSize:
 
 FontSize = _FontSize()
 
+class _FontStretch:
+    _sv_class = sv.FontStretch
+
+    @property
+    def ultra_condensed(cls):
+        return noop / sv.FontStretch.ultra_condensed
+
+    @property
+    def extra_condensed(cls):
+        return noop / sv.FontStretch.extra_condensed
+
+    @property
+    def condensed(cls):
+        return noop / sv.FontStretch.condensed
+
+    @property
+    def semi_condensed(cls):
+        return noop / sv.FontStretch.semi_condensed
+
+    @property
+    def normal(cls):
+        return noop / sv.FontStretch.normal
+
+    @property
+    def semi_expanded(cls):
+        return noop / sv.FontStretch.semi_expanded
+
+    @property
+    def expanded(cls):
+        return noop / sv.FontStretch.expanded
+
+    @property
+    def extra_expanded(cls):
+        return noop / sv.FontStretch.extra_expanded
+
+    @property
+    def ultra_expanded(cls):
+        return noop / sv.FontStretch.ultra_expanded
+
+
+FontStretch = _FontStretch()
+
 
 class _FontWeight:
     _sv_class = sv.FontWeight
@@ -1053,13 +1095,13 @@ class _VerticalAlign:
         return noop / sv.VerticalAlign.textbottom
 
     @property
-    def alignsub(cls):
-        return noop / sv.VerticalAlign.alignsub
+    def sub(cls):
+        return noop / sv.VerticalAlign.sub
 
 
     @property
-    def alignsuper(cls):
-        return noop / sv.VerticalAlign.alignsuper
+    def super(cls):
+        return noop / sv.VerticalAlign.super
         
     
     
@@ -1622,45 +1664,45 @@ class _Transition:
 
 Transition = _Transition()
 
+# has been removed 
+
+# class _GridAuto:
+#     _sv_class = sv.GridAuto
+
+#     @property
+#     def cauto(cls):
+#         return noop / sv.GridAuto.cauto
+
+#     @property
+#     def cmin(cls):
+#         return noop / sv.GridAuto.cmin
+
+#     @property
+#     def cmax(cls):
+#         return noop / sv.GridAuto.cmax
+
+#     @property
+#     def cfr(cls):
+#         return noop / sv.GridAuto.cfr
+
+#     @property
+#     def rauto(cls):
+#         return noop / sv.GridAuto.rauto
+
+#     @property
+#     def rmin(cls):
+#         return noop / sv.GridAuto.rmin
+
+#     @property
+#     def rmax(cls):
+#         return noop / sv.GridAuto.rmax
+
+#     @property
+#     def rfr(cls):
+#         return noop / sv.GridAuto.rfr
 
 
-class _GridAuto:
-    _sv_class = sv.GridAuto
-
-    @property
-    def cauto(cls):
-        return noop / sv.GridAuto.cauto
-
-    @property
-    def cmin(cls):
-        return noop / sv.GridAuto.cmin
-
-    @property
-    def cmax(cls):
-        return noop / sv.GridAuto.cmax
-
-    @property
-    def cfr(cls):
-        return noop / sv.GridAuto.cfr
-
-    @property
-    def rauto(cls):
-        return noop / sv.GridAuto.rauto
-
-    @property
-    def rmin(cls):
-        return noop / sv.GridAuto.rmin
-
-    @property
-    def rmax(cls):
-        return noop / sv.GridAuto.rmax
-
-    @property
-    def rfr(cls):
-        return noop / sv.GridAuto.rfr
-
-
-GridAuto = _GridAuto()
+# GridAuto = _GridAuto()
 
 class _ScreenReaders:
     _sv_class = sv.ScreenReaders

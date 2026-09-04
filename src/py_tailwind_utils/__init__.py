@@ -46,7 +46,8 @@ from .modifiers import hover
 #from .modifiers import placeholder
 from .modifiers import selection
 from .modifiers import active
-
+from .modifiers import before
+from .modifiers import after
 from .modifiers import variant
 
 from .style_values_noop import AlignContent as ac
@@ -70,7 +71,8 @@ from .skui_tags import SkFontSize as skfz
 from .style_values_noop import FontSmoothing as fm
 from .style_values_noop import FontStyle as fy
 from .style_values_noop import FontWeight as fw
-from .style_values_noop import GridAuto as ga
+from .style_values_noop import FontStretch as fs
+#from .style_values_noop import GridAuto as ga
 from .style_values_noop import GridFlow as gf
 from .style_values_noop import JustifyContent as jc
 from .style_values_noop import JustifyItems as ji

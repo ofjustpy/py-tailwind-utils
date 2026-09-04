@@ -65,6 +65,14 @@ def active(*args):
     return modify(*args, modifier="active")
 
 
+def before(*args):
+    return modify(*args, modifier="before")
+
+
+def after(*args):
+    return modify(*args, modifier="after")
+
+
 # https://tailwindcss.com/docs/hover-focus-and-other-states#pseudo-class-reference
 # focus-within
 # focus-visible
